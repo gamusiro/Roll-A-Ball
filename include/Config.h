@@ -1,0 +1,47 @@
+#ifndef ROLL_A_BALL_INCLUDE_CONFIG_H_
+#define ROLL_A_BALL_INCLUDE_CONFIG_H_
+
+// Standard
+#include <iostream>
+#include <string>
+#include <vector>
+#include <cstdint>
+#include <memory>
+#include <unordered_map>
+#include <map>
+
+// Phyisics
+#include <btBulletDynamicsCommon.h>
+
+// Mathmatics
+#include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/quaternion.hpp>
+#include <glm/gtx/euler_angles.hpp>
+
+// GLFW
+#include <glfw/glfw3.h>
+#include <glfw/glfw3native.h>
+
+// GLAD
+#include <glad/glad.h>
+
+// spdlog
+#include <spdlog/spdlog.h>
+#include <spdlog/fmt/ostr.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
+
+// entt
+#include <entt/entt.hpp>
+
+// Window Settings
+#define DEFAULT_WIDTH  640
+#define DEFAULT_HEIGHT 480
+#define DEFAULT_CAPTION "Roll-A-Ball"
+
+
+class Scene;
+using ScenePtr = std::shared_ptr<Scene>;
+
+#endif //!ROLL_A_BALL_INCLUDE_CONFIG_H_
