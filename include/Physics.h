@@ -7,6 +7,10 @@ class Physics
 public:
     static Physics& Instance();
 
+public:
+    void AddRigidBody(btRigidBody* rigidBody);
+    void RemoveRigidBody(btRigidBody* rigidBody);
+
 private:
     void init();
     void update(float timeStep = 1.0f / 60.0f);

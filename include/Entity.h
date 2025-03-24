@@ -9,6 +9,12 @@ public:
     Entity(ScenePtr scene);
     virtual ~Entity(){}
 
+public:
+    virtual void Awake(){}
+    virtual void Start(){}
+    virtual void Update(){}
+
+public:
     template<typename Comp, typename... Args>
     Comp& AddComponent(Args&&... args)
     {

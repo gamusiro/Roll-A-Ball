@@ -6,6 +6,16 @@ Physics& Physics::Instance()
     return instance;
 }
 
+void Physics::AddRigidBody(btRigidBody* rigidBody)
+{
+    m_DynamicsWorld->addRigidBody(rigidBody);
+}
+
+void Physics::RemoveRigidBody(btRigidBody* rigidBody)
+{
+    m_DynamicsWorld->removeRigidBody(rigidBody);
+}
+
 void Physics::init()
 {
     m_CollisionConfiguration    = new btDefaultCollisionConfiguration();

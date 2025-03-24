@@ -4,6 +4,7 @@
 // Standard
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <vector>
 #include <cstdint>
 #include <memory>
@@ -35,10 +36,19 @@
 // entt
 #include <entt/entt.hpp>
 
+// assimp
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
 // Window Settings
 #define DEFAULT_WIDTH  640
 #define DEFAULT_HEIGHT 480
 #define DEFAULT_CAPTION "Roll-A-Ball"
+
+#define ASSETS_PATH "assets/"
+#define SHADERS_PATH ASSETS_PATH "shaders/"
+#define MODELS_PATH ASSETS_PATH "models/"
 
 
 class Scene;

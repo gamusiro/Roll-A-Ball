@@ -4,11 +4,19 @@
 
 #include "Logger.h"
 #include "Utils.h"
-#include "Entity.h"
 
 // Components
 #include "Transform.h"
+#include "Mesh.h"
+#include "Shader.h"
+#include "MeshRenderer.h"
+#include "Camera.h"
+#include "BoxCollider.h"
+#include "SphereCollider.h"
+#include "MeshCollider.h"
+#include "RigidBody.h"
 
+class Entity;
 class Scene : public std::enable_shared_from_this<Scene>
 {
 public:
@@ -24,11 +32,18 @@ public:
 
 protected:
     template<typename T>
-    inline std::unique_ptr<T> Instantiate()
+    inline std::unique_ptr<T> Instantiate();
+
+    template<typename... Types>
+    decltype(auto) View()
     {
-        std::unique_ptr<T> ret = std::make_unique<T>(shared_from_this());
-        static_cast<Entity*>(ret.get())->AddComponent<Transform>();
-        return ret;
+        return m_Registry.view<Types...>();
+    }
+
+    template<typename... Types>
+    decltype(auto) View() const
+    {
+        return m_Registry.view<Types...>();
     }
 
 private:
@@ -61,11 +76,16 @@ private:
         return m_Registry.get<Comp>(entity);
     }
 
+protected:
+    std::vector<Entity*> m_StartUpEntities;
+
 private:
     entt::registry m_Registry;
 
 private:
     friend class Entity;
 };
+
+#include "Scene.hpp"
 
 #endif //!ROLL_A_BALL_INCLUDE_SCENE_H_

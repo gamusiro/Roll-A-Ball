@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 
 #include "Scene.h"
+#include "MeshManager.h"
 
 SceneManager& SceneManager::Instance()
 {
@@ -12,6 +13,8 @@ void SceneManager::LoadScene(std::shared_ptr<Scene> scene)
 {
     if(!Empty())
         m_CurScene->Term();
+    
+    MeshManager::Instance().Clear();
     
     m_CurScene = scene;
     m_CurScene->Init();

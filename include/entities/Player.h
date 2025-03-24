@@ -9,7 +9,7 @@ public:
     Player(ScenePtr scene);
 
 public:
-    void Update();
+    void Awake();
 };
 
 #endif //!ROLL_A_BALL_INCLUDE_ENTITIES_PLAYER_H_

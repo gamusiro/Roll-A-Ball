@@ -43,5 +43,5 @@ const glm::mat4 Transform::calclateParent() const
     if (m_Parent)
         return m_LocalMatrix * m_Parent->calclateParent();
 
-    return glm::mat4(1.0f);
+    return m_LocalMatrix;
 }

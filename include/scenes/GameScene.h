@@ -3,7 +3,9 @@
 #include "Config.h"
 #include "Scene.h"
 
+// entities
 #include "entities/Player.h"
+#include "entities/MainCamera.h"
 
 class GameScene : public Scene
 {
@@ -15,7 +17,7 @@ public:
 
 private:
     std::unique_ptr<Player> m_Player;
-    //Entity m_Camera;
+    std::unique_ptr<MainCamera> m_MainCamera;
 };
 
 

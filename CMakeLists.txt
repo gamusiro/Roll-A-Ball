@@ -8,11 +8,13 @@ add_subdirectory(vendor/glfw)
 add_subdirectory(vendor/entt)
 add_subdirectory(vendor/glad)
 add_subdirectory(vendor/spdlog)
+add_subdirectory(vendor/assimp)
 
 # project files
 file(GLOB_RECURSE SOURCES
     ${CMAKE_SOURCE_DIR}/src/*.cpp
     ${CMAKE_SOURCE_DIR}/include/*.h
+    ${CMAKE_SOURCE_DIR}/include/*.hpp
 )
 
 # build project
@@ -33,12 +35,15 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/vendor/glfw/include
     ${CMAKE_SOURCE_DIR}/vendor/glad/include
     ${CMAKE_SOURCE_DIR}/vendor/spdlog/include
+    ${CMAKE_SOURCE_DIR}/vendor/assimp/include
+    ${CMAKE_SOURCE_DIR}/build/vendor/assimp/include
 )
 
 # link libraries
 if(WIN32)
     target_link_directories(${PROJECT_NAME} PUBLIC
         ${CMAKE_SOURCE_DIR}/build/lib/${CONFIG}
+        ${CMAKE_SOURCE_DIR}/build/vendor/assimp/lib/${CONFIG}
     )
 
     target_link_libraries(${PROJECT_NAME} PUBLIC
@@ -59,8 +64,10 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
     EnTT
     glm
     GLAD
+    assimp
 )
 
+target_compile_options(${PROJECT_NAME} PUBLIC /FS)
 target_compile_options(${PROJECT_NAME} PUBLIC "/utf-8")
 
 # Asset Directory

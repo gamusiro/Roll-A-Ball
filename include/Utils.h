@@ -1,5 +1,6 @@
 #ifndef ROLL_A_BALL_INCLUDE_UTILS_H_
 #define ROLL_A_BALL_INCLUDE_UTILS_H_
+#include "Config.h"
 #include "Logger.h"
 
 // defines
@@ -22,6 +23,13 @@
                                             LOG_INFO_GLM_VEC3("Dir U", transform.GetUp());\
                                             LOG_INFO_GLM_MAT4("Local", transform.GetLocalMatrix());\
                                             LOG_INFO_GLM_MAT4("World", transform.GetWorldMatrix());\
+
+#define VEC3_GLM_2_BT(vec) btVector3(vec.x, vec.y, vec.z)
+#define VEC4_GLM_2_BT(vec) btVector4(vec.x, vec.y, vec.z, vec.w)
+#define QUAT_GLM_2_BT(quat) btQuaternion(quat.w, quat.x, quat.y, quat.z)
+#define VEC3_BT_2_GLM(vec) glm::vec3(vec.x(), vec.y(), vec.z())
+#define VEC4_BT_2_GLM(vec) glm::vec4(vec.x(), vec.y(), vec.z(), vec.w())
+#define QUAT_BT_2_GLM(quat) glm::quat(quat.w(), quat.x(), quat.y(), quat.z())
 
 
 #endif //!ROLL_A_BALL_INCLUDE_UTILS_H_

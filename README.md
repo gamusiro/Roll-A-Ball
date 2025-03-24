@@ -17,6 +17,8 @@ Unityの初心者向けプロジェクトをC++で作成すること
 - entt
 - bullet3
 - spdlog
+- assimp
+- stb
 
 ## 対象
 Windows
