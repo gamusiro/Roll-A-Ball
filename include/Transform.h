@@ -36,7 +36,25 @@ public:
 		calculate();
 	}
 
+	Transform(const glm::vec3& position, const glm::quat& rotation, const glm::vec3& scale)
+		: m_Parent(nullptr),
+		m_Position(position),
+		m_Rotation(rotation),
+		m_Scale(scale)
+	{
+		calculate();
+	}
+
 	Transform(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale, Transform* parent)
+		: m_Parent(parent),
+		m_Position(position),
+		m_Rotation(rotation),
+		m_Scale(scale)
+	{
+		calculate();
+	}
+
+	Transform(const glm::vec3& position, const glm::quat& rotation, const glm::vec3& scale, Transform* parent)
 		: m_Parent(parent),
 		m_Position(position),
 		m_Rotation(rotation),

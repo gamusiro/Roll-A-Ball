@@ -34,6 +34,18 @@ protected:
     template<typename T>
     inline std::unique_ptr<T> Instantiate();
 
+    template<typename T>
+    inline std::unique_ptr<T> Instantiate(
+        const glm::vec3& position,
+        const glm::vec3& euler, 
+        const glm::vec3& scale);
+
+    template<typename T>
+    inline std::unique_ptr<T> Instantiate(
+        const glm::vec3& position,
+        const glm::quat& rotation,
+        const glm::vec3& scale);
+
     template<typename... Types>
     decltype(auto) View()
     {

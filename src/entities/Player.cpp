@@ -17,14 +17,13 @@ void Player::Awake()
 
     Transform& transform = GetComponent<Transform>();
 
-    float radius = 1.0f;
-
     ColliderParameter param;
-    param.transform.setOrigin(btVector3(0.0f, 0.0f, 0.0f));
+    param.transform.setOrigin(VEC3_GLM_2_BT(transform.GetPosition()));
     param.transform.setRotation(QUAT_GLM_2_BT(transform.GetRotationQuat()));
     param.mass = 1.0f;
     param.friction = 1.0f;
     
+    const float radius = 1.0f;
     SphereCollider& collider = AddComponent<SphereCollider>(radius, param);
     AddComponent<RigidBody>(collider);
 }

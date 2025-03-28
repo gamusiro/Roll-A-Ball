@@ -16,8 +16,10 @@ MeshCollider::MeshCollider(const glm::vec3& scale, const Mesh& mesh, const Colli
     m_Shape = new btBvhTriangleMeshShape(m_Mesh, true);
     m_Shape->setLocalScaling(VEC3_GLM_2_BT(scale));
 
-    btVector3 localInetia;
-    m_Shape->calculateLocalInertia(parameter.mass, localInetia);
+    btVector3 localInetia(0.0f, 0.0f, 0.0f);
+    if (parameter.mass != 0.0f) {
+        m_Shape->calculateLocalInertia(parameter.mass, localInetia);
+    }
 
     btDefaultMotionState* motion = new btDefaultMotionState(parameter.transform);
     btRigidBody::btRigidBodyConstructionInfo rbInfo(parameter.mass, motion, m_Shape, localInetia);

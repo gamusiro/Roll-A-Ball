@@ -8,7 +8,9 @@ BoxCollider::BoxCollider(const glm::vec3& scale, const ColliderParameter& parame
     m_Shape = new btBoxShape(VEC3_GLM_2_BT(scale));
 
     btVector3 localInetia(0.0f, 0.0f, 0.0f);
-    m_Shape->calculateLocalInertia(parameter.mass, localInetia);
+    if (parameter.mass != 0.0f) {
+        m_Shape->calculateLocalInertia(parameter.mass, localInetia);
+    }
 
     btDefaultMotionState* motion = new btDefaultMotionState(parameter.transform);
     btRigidBody::btRigidBodyConstructionInfo rbInfo(parameter.mass, motion, m_Shape, localInetia);
