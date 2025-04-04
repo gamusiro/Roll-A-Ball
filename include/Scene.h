@@ -4,6 +4,7 @@
 
 #include "Logger.h"
 #include "Utils.h"
+#include "KeyEvent.h"
 
 // Components
 #include "Transform.h"
@@ -88,11 +89,32 @@ private:
         return m_Registry.get<Comp>(entity);
     }
 
+public:
+    template<typename Event, typename... Args>
+    void Dispatch(Args&&... args)
+    {
+        m_Dispatcher.trigger<Event>(std::forward<Args>(args)...);
+    }
+
+protected:
+    template<typename Event, typename Value, auto Method>
+    void AddEventListener(Value& value)
+    {
+        m_Dispatcher.sink<Event>().connect<Method>(value);
+    }
+
+    template<typename Event, typename Value, auto Method>
+    void RemoveEventListener(Value& value)
+    {
+        m_Dispatcher.sink<Event>().disconnect<Method>(value);
+    }
+
 protected:
     std::vector<Entity*> m_StartUpEntities;
 
 private:
     entt::registry m_Registry;
+    entt::dispatcher m_Dispatcher;
 
 private:
     friend class Entity;

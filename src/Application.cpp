@@ -6,6 +6,7 @@
 #include "Physics.h"
 #include "Scene.h"
 #include "SceneManager.h"
+#include "KeyEvent.h"
 
 #include "scenes/GameScene.h"
 
@@ -57,6 +58,32 @@ bool Application::init()
 
     // Make context
     glfwMakeContextCurrent(m_Window);
+
+    // Key call back
+    glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
+    {
+        switch (action)
+        {
+            case GLFW_PRESS:
+            {
+                KeyEventPressed e(key, 0);
+                SceneManager::Instance().m_CurScene->Dispatch<KeyEventPressed>(std::move(e));
+                break;
+            }
+            case GLFW_REPEAT:
+            {
+                KeyEventPressed e(key, 1);
+                SceneManager::Instance().m_CurScene->Dispatch<KeyEventPressed>(std::move(e));
+                break;
+            }
+            case GLFW_RELEASE:
+            {
+                KeyEventReleased e(key);
+                SceneManager::Instance().m_CurScene->Dispatch<KeyEventReleased>(std::move(e));
+                break;
+            }
+        }
+    });
 
     // Load glad
     if(gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) != GLFW_TRUE)

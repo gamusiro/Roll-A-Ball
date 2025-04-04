@@ -3,6 +3,7 @@
 RigidBody::RigidBody(const Collider& collider)
     :m_RigidBody(collider.m_RigidBody)
 {
+    m_RigidBody->setActivationState(DISABLE_DEACTIVATION);
 }
 
 void RigidBody::AddImpulse(const glm::vec3& impulse)

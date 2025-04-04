@@ -13,6 +13,7 @@
 
 // Phyisics
 #include <btBulletDynamicsCommon.h>
+#include <BulletCollision/CollisionDispatch/btGhostObject.h>
 
 // Mathmatics
 #include <glm/glm.hpp>

@@ -18,10 +18,15 @@ void Transform::SetRotation(const glm::quat& quat)
     calculate();
 }
 
-void Transform::SetScale (const glm::vec3& scale) 
+void Transform::SetScale(const glm::vec3& scale) 
 { 
     m_Scale = scale;
     calculate();
+}
+
+void Transform::SetParent(const Transform* parent)
+{
+    m_Parent = parent;
 }
 
 void Transform::calculate()
@@ -41,7 +46,7 @@ void Transform::calculate()
 const glm::mat4 Transform::calclateParent() const
 {
     if (m_Parent)
-        return m_LocalMatrix * m_Parent->calclateParent();
+        return m_Parent->calclateParent() * m_LocalMatrix;
 
     return m_LocalMatrix;
 }

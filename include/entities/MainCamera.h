@@ -9,6 +9,7 @@ class MainCamera : public Entity
 public:
     MainCamera(ScenePtr scene);
     void Awake() override;
+    void Update() override;
 
 public:
     inline glm::mat4 GetViewMatrix() const { return m_ViewMatrix; }

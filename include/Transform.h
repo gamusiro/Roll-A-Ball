@@ -73,10 +73,12 @@ public:
 	inline const glm::vec3 GetUp() const { return m_UpDir; }
 	inline const glm::mat4 GetLocalMatrix() const { return m_LocalMatrix; }
 	inline const glm::mat4 GetWorldMatrix() const { return m_WorldMatrix; }
+	inline const Transform* GetParent() const { return m_Parent; }
 	void SetPosition(const glm::vec3& position);
 	void SetRotation(const glm::vec3& euler);
 	void SetRotation(const glm::quat& quat);
 	void SetScale (const glm::vec3& scale);
+	void SetParent(const Transform* parent);
 
 public:
 	
@@ -86,7 +88,7 @@ private:
 	const glm::mat4 calclateParent() const;
 
 private:
-	Transform* m_Parent;
+	const Transform* m_Parent;
 	glm::vec3 m_Position;
 	glm::quat m_Rotation;
 	glm::vec3 m_Scale;

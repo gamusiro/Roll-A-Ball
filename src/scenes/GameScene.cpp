@@ -6,57 +6,64 @@ bool GameScene::Init()
     
     // Player
     {
-        glm::vec3 position(0.0f, 5.0f, 0.0f);
+        glm::vec3 position(0.0f, 0.5f, 0.0f);
         glm::vec3 euler(0.0f);
         glm::vec3 scale(1.0f);
         m_Player = Instantiate<Player>(position, euler, scale);
+        AddEventListener<KeyEventPressed, Player, &Player::KeyPressed>(*m_Player.get());
     }
     
     // Camera
     {
-        glm::vec3 position(0.0f, 5.0f, 15.0f);
-        glm::quat rotation = glm::quat(glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+        glm::vec3 position(0.0f, 7.0f, 15.0f);
+        glm::vec3 euler = glm::vec3(glm::radians(-20.0f), 0.0f, 0.0f);
+        //glm::vec3 position(0.0f, 25.0f, 0.0f);
+        //glm::vec3 euler = glm::vec3(glm::radians(-89.0f), 0.0f, 0.0f);
         glm::vec3 scale(1.0f);
-        m_MainCamera = Instantiate<MainCamera>(position, rotation, scale);
+        m_MainCamera = Instantiate<MainCamera>(position, euler, scale);
+
+        Transform& player = m_Player->GetComponent<Transform>();
+        Transform& camera = m_MainCamera->GetComponent<Transform>();
+        camera.SetParent(&player);
     }
     
     // Ground
     {
         glm::vec3 position(0.0f);
         glm::vec3 euler(0.0f);
-        glm::vec3 scale(5.0f, 1.0f, 5.0f);
+        glm::vec3 scale(2.0f, 1.0f, 2.0f);
         m_Ground = Instantiate<Ground>(position, euler, scale);
     }
 
-    // Walls North
+    // Wall 01
     {
-        glm::vec3 position(0.0f, 0.5f, 5.5f);
+        glm::vec3 position(-10.0f, 0.0f, 0.0f);
         glm::vec3 euler(0.0f);
-        glm::vec3 scale(5.0f, 1.0f, 0.5f);
+        glm::vec3 scale(0.5f, 1.0f, 20.5f);
         m_Walls.push_back(Instantiate<Wall>(position, euler, scale));
     }
 
-    // Walls South
+    // Wall 02
     {
-        glm::vec3 position(0.0f, 0.5f, -5.5f);
+        glm::vec3 position(10.0f, 0.0f, 0.0f);
         glm::vec3 euler(0.0f);
-        glm::vec3 scale(5.0f, 1.0f, 0.5f);
+        glm::vec3 scale(0.5f, 1.0f, 20.5f);
         m_Walls.push_back(Instantiate<Wall>(position, euler, scale));
     }
 
-    // Walls East
+    // Wall 03
     {
-        glm::vec3 position(5.5f, 0.5f, 0.0f);
+        glm::vec3 position(0.0f, 0.0f, -10.0f);
         glm::vec3 euler(0.0f);
-        glm::vec3 scale(0.5f, 1.0f, 5.0f);
+        glm::vec3 scale(20.5f, 1.0f, 0.5f);
         m_Walls.push_back(Instantiate<Wall>(position, euler, scale));
     }
 
-    // Walls West
+    // wall 04
     {
-        glm::vec3 position(-5.5f, 0.5f, 0.0f);
+        glm::vec3 position(0.0f, 0.0f, 10.0f);
         glm::vec3 euler(0.0f);
-        glm::vec3 scale(0.5f, 1.0f, 5.0f);
+        glm::vec3 scale(20.5f, 1.0f, 0.5f);
         m_Walls.push_back(Instantiate<Wall>(position, euler, scale));
     }
 
@@ -81,6 +88,7 @@ void GameScene::Update()
     }
 
     m_Player->Update();
+    m_MainCamera->Update();
 }
 
 void GameScene::Render() const

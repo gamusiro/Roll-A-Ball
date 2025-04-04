@@ -21,7 +21,7 @@ void Wall::Awake()
     param.transform.setOrigin(VEC3_GLM_2_BT(transform.GetPosition()));
     param.transform.setRotation(QUAT_GLM_2_BT(transform.GetRotationQuat()));
     param.mass = 0.0f;
-    param.friction = 1.0f;
+    param.friction = 0.95f;
     
     BoxCollider& collider = AddComponent<BoxCollider>(transform.GetScale(), param);
 }

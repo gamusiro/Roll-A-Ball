@@ -10,6 +10,10 @@ public:
 
 public:
     void Awake();
+
+public:
+    void KeyPressed(const KeyEventPressed& e);
+    void KeyReleased(const KeyEventReleased& e);
 };
 
 #endif //!ROLL_A_BALL_INCLUDE_ENTITIES_PLAYER_H_

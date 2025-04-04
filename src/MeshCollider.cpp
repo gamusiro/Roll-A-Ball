@@ -7,9 +7,9 @@ MeshCollider::MeshCollider(const glm::vec3& scale, const Mesh& mesh, const Colli
     const std::vector<uint32_t> indices = mesh.GetIndices();
     for(int i = 0; i < mesh.GetIndexCount(); i += 3)
     {
-        btVector3 vertex1 = VEC3_GLM_2_BT(vertices[indices[i] + 0].Position);
-        btVector3 vertex2 = VEC3_GLM_2_BT(vertices[indices[i] + 1].Position);
-        btVector3 vertex3 = VEC3_GLM_2_BT(vertices[indices[i] + 2].Position);
+        btVector3 vertex1 = VEC3_GLM_2_BT(vertices[indices[i + 0]].Position);
+        btVector3 vertex2 = VEC3_GLM_2_BT(vertices[indices[i + 1]].Position);
+        btVector3 vertex3 = VEC3_GLM_2_BT(vertices[indices[i + 2]].Position);
         m_Mesh->addTriangle(vertex1, vertex2, vertex3);
     }
 
