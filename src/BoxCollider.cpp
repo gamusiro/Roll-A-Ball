@@ -18,6 +18,7 @@ BoxCollider::BoxCollider(const Entity* entity, const glm::vec3& scale, const Col
     m_RigidBody = new btRigidBody(rbInfo);
     m_RigidBody->setFriction(parameter.friction);
     m_RigidBody->setUserPointer((void*)entity);
+    SetTrigger(parameter.isTrigger);
 
     Physics::Instance().AddRigidBody(m_RigidBody);
 }

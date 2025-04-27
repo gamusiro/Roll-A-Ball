@@ -33,18 +33,6 @@ void Player::Awake()
     AddComponent<RigidBody>(collider);
 }
 
-void Player::OnCollisionEnter(const Entity* entity)
-{
-    Tag& tag = entity->GetComponent<Tag>();
-    std::cout << "Player::OnCollisionEnter: " << tag.GetName() << std::endl;
-}
-
-void Player::OnCollisionExit(const Entity* entity)
-{
-    Tag& tag = entity->GetComponent<Tag>();
-    std::cout << "Player::OnCollisionExit: " << tag.GetName() << std::endl;
-}
-
 void Player::KeyPressed(const KeyEventPressed& e)
 {
     LOG_CORE_INFO("KeyEvent!!!");

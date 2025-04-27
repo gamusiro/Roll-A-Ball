@@ -36,6 +36,9 @@ void Physics::update(entt::registry& registry, float timeStep)
     m_Last = m_Current;
     m_Current.clear();
 
+    m_LastTrigger = m_CurrentTrigger;
+    m_CurrentTrigger.clear();
+
     m_DynamicsWorld->stepSimulation(timeStep);
     
     {// Box Colliders
@@ -78,6 +81,24 @@ void Physics::update(entt::registry& registry, float timeStep)
         bool nowColliding = m_Current.find(pair) != m_Current.end();
         if (!nowColliding)
             pair.first->OnCollisionExit(pair.second);
+    }
+
+    // Currnet Collisions
+    for (const auto& pair : m_CurrentTrigger)
+    {
+        bool wasColliding = m_LastTrigger.find(pair) != m_LastTrigger.end();
+        if (!wasColliding)
+            pair.first->OnTriggerEnter(pair.second);
+        else
+            pair.first->OnTriggerStay(pair.second);
+    }
+
+    // Last Collisions
+    for (const auto& pair : m_LastTrigger)
+    {
+        bool nowColliding = m_CurrentTrigger.find(pair) != m_CurrentTrigger.end();
+        if (!nowColliding)
+            pair.first->OnTriggerExit(pair.second);
     }
 }
 

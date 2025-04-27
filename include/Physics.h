@@ -41,6 +41,8 @@ private:
 
     std::unordered_set<std::pair<Entity*, Entity*>, PairHash> m_Last;
     std::unordered_set<std::pair<Entity*, Entity*>, PairHash> m_Current;
+    std::unordered_set<std::pair<Entity*, Entity*>, PairHash> m_LastTrigger;
+    std::unordered_set<std::pair<Entity*, Entity*>, PairHash> m_CurrentTrigger;
 
 private:
     friend class Application;

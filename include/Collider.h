@@ -11,6 +11,7 @@ typedef struct
     btTransform transform;
     float mass;
     float friction;
+    bool isTrigger = false;
 } ColliderParameter;
 
 class Collider : public Component
@@ -19,8 +20,11 @@ public:
     Collider(const Entity* entity);
     virtual ~Collider();
 
+public:
+    void SetTrigger(bool isTrigger);
+    bool IsTrigger() const;
+
 protected:
-    btCollisionWorld::ContactResultCallback* m_Callback;
     btCollisionShape* m_Shape;
     btRigidBody* m_RigidBody;
 

@@ -15,6 +15,7 @@ SphereCollider::SphereCollider(const Entity* entity, float radius, const Collide
     m_RigidBody = new btRigidBody(rbInfo);
     m_RigidBody->setFriction(parameter.friction);
     m_RigidBody->setUserPointer((void*)entity);
+    SetTrigger(parameter.isTrigger);
 
     Physics::Instance().AddRigidBody(m_RigidBody);
 }
