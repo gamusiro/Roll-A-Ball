@@ -7,7 +7,7 @@
 class SphereCollider : public Collider
 {
 public:
-    SphereCollider(float radius, const ColliderParameter& parameter);
+    SphereCollider(const Entity* entity, float radius, const ColliderParameter& parameter);
 };
 
 #endif //!ROLL_A_BALL_INCLUDE_SHPERECOLLIDER_H_

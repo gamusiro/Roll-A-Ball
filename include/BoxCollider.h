@@ -7,7 +7,7 @@
 class BoxCollider : public Collider
 {
 public:
-    BoxCollider(const glm::vec3& scale, const ColliderParameter& parameter);
+    BoxCollider(const Entity* entity, const glm::vec3& scale, const ColliderParameter& parameter);
 };
 
 #endif //!ROLL_A_BALL_INCLUDE_BOXCOLLIDER_H_

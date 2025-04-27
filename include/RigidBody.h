@@ -4,15 +4,15 @@
 
 #include "Collider.h"
 #include "Utils.h"
+#include "Component.h"
 
-class RigidBody
+class RigidBody : public Component
 {
 public:
-    RigidBody(const Collider& collider);
+    RigidBody(const Entity* entity, const Collider& collider);
 
 public:
     void AddImpulse(const glm::vec3& impulse);
-
     inline const glm::vec3 GetPosition() const { return VEC3_BT_2_GLM(m_RigidBody->getWorldTransform().getOrigin()); }
 
 private:

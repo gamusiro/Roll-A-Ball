@@ -7,7 +7,7 @@ class MeshManager
 {
 public:
     static MeshManager& Instance();
-    std::shared_ptr<Mesh> Create(const std::string& fileName);
+    MeshPtr Create(const std::string& fileName);
     void Clear();
 
 private:
@@ -20,7 +20,7 @@ private:
     MeshManager operator= (const MeshManager&) = delete;
 
 private:
-    std::unordered_map<std::string, std::shared_ptr<Mesh>> m_Meshes; 
+    std::unordered_map<std::string, MeshPtr> m_Meshes; 
 };
 
 #endif //!ROLL_A_BALL_INCLUDE_MESHMANAGER_H_

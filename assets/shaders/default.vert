@@ -4,6 +4,7 @@ layout (location = 1) in vec3 a_Nor;
 layout (location = 2) in vec2 a_Tex;
 layout (location = 3) in vec4 a_Col;
 
+
 uniform mat4 u_ViewProjection;
 uniform mat4 u_Transform;
 

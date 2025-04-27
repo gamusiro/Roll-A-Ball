@@ -1,7 +1,8 @@
 #include "RigidBody.h"
 
-RigidBody::RigidBody(const Collider& collider)
-    :m_RigidBody(collider.m_RigidBody)
+RigidBody::RigidBody(const Entity* entity, const Collider& collider)
+    : Component(entity),
+    m_RigidBody(collider.m_RigidBody)
 {
     m_RigidBody->setActivationState(DISABLE_DEACTIVATION);
 }

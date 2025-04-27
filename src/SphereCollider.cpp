@@ -1,6 +1,7 @@
 #include "SphereCollider.h"
 
-SphereCollider::SphereCollider(float radius, const ColliderParameter& parameter)
+SphereCollider::SphereCollider(const Entity* entity, float radius, const ColliderParameter& parameter)
+    : Collider(entity)
 {
     m_Shape = new btSphereShape(radius);
 

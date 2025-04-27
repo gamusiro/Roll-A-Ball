@@ -2,17 +2,19 @@
 #define ROLL_A_BALL_INCLUDE_MESHRENDERER_H_
 #include "Config.h"
 
+#include "Component.h"
+
 class Mesh;
-class MeshRenderer
+class MeshRenderer : public Component
 {
 public:
-    MeshRenderer(const Mesh& mesh);
+    MeshRenderer(const Entity* entity, const MeshPtr mesh);
 
 public:
     void Render() const;
 
 private:
-    const Mesh& m_Mesh;
+    const MeshPtr m_Mesh;
 };
 
 #endif //!ROLL_A_BALL_INCLUDE_MESHRENDERER_H_

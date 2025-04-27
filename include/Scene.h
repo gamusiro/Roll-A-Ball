@@ -16,8 +16,8 @@
 #include "SphereCollider.h"
 #include "MeshCollider.h"
 #include "RigidBody.h"
+#include "Material.h"
 
-class Entity;
 class Scene : public std::enable_shared_from_this<Scene>
 {
 public:

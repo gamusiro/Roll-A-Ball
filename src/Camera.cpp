@@ -13,14 +13,16 @@ const glm::mat4 Camera::CalcViewMatrix(const glm::vec3& eye, const glm::vec3& ta
     return glm::lookAt(eye, target, up);
 }
 
-OrthographicsCamera::OrthographicsCamera()
-    :m_Left(-1.0f), m_Right(1.0f), m_Bottom(1.0f), m_Top(-1.0f)
+OrthographicsCamera::OrthographicsCamera(const Entity* entity)
+    : Camera(entity),
+    m_Left(-1.0f), m_Right(1.0f), m_Bottom(1.0f), m_Top(-1.0f)
 {
     calculate();
 }
 
-OrthographicsCamera::OrthographicsCamera(float left, float right, float bottom, float top)
-    :m_Left(left), m_Right(right), m_Bottom(bottom), m_Top(top)
+OrthographicsCamera::OrthographicsCamera(const Entity* entity, float left, float right, float bottom, float top)
+    : Camera(entity),
+    m_Left(left), m_Right(right), m_Bottom(bottom), m_Top(top)
 {
     calculate();
 }
@@ -30,16 +32,18 @@ void OrthographicsCamera::calculate()
     m_ProjectionMatrix = glm::ortho(m_Left, m_Right, m_Bottom, m_Top);
 }
 
-PerspectiveCamera::PerspectiveCamera()
-    :m_Fovy(glm::radians(45.0f)),
+PerspectiveCamera::PerspectiveCamera(const Entity* entity)
+    : Camera(entity),
+    m_Fovy(glm::radians(45.0f)),
     m_Aspect(1.0f),
     m_Znear(0.1f), m_Zfar(100.0f)
 {
     calculate();
 }
 
-PerspectiveCamera::PerspectiveCamera(float fovy, float aspect, float znear, float zfar)
-    :m_Fovy(fovy),
+PerspectiveCamera::PerspectiveCamera(const Entity* entity, float fovy, float aspect, float znear, float zfar)
+    : Camera(entity),
+    m_Fovy(fovy),
     m_Aspect(aspect),
     m_Znear(znear), m_Zfar(zfar)
 {

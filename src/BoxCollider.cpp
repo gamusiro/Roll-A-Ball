@@ -3,7 +3,8 @@
 #include "Transform.h"
 #include "Utils.h"
 
-BoxCollider::BoxCollider(const glm::vec3& scale, const ColliderParameter& parameter)
+BoxCollider::BoxCollider(const Entity* entity, const glm::vec3& scale, const ColliderParameter& parameter)
+    : Collider(entity)
 {
     m_Shape = new btBoxShape(VEC3_GLM_2_BT(scale));
 

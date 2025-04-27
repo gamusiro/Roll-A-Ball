@@ -7,7 +7,7 @@ MeshManager& MeshManager::Instance()
     return instance;
 }
 
-std::shared_ptr<Mesh> MeshManager::Create(const std::string& fileName)
+MeshPtr MeshManager::Create(const std::string& fileName)
 {
     LOG_CORE_INFO("MeshManager::Create");
 
@@ -57,7 +57,7 @@ std::shared_ptr<Mesh> MeshManager::Create(const std::string& fileName)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * indices.size(), indices.data(), GL_STATIC_DRAW);
 
-    std::shared_ptr<Mesh> ret = std::make_shared<Mesh>(vertices, indices, VAO, VBO, EBO);
+    MeshPtr ret = std::make_shared<Mesh>(vertices, indices, VAO, VBO, EBO);
     m_Meshes.emplace(fileName, ret);
     return ret;
 }

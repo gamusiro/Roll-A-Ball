@@ -8,7 +8,7 @@
 class MeshCollider : public Collider
 {
 public:
-    MeshCollider(const glm::vec3& scale, const Mesh& mesh, const ColliderParameter& parameter);
+    MeshCollider(const Entity* entity, const glm::vec3& scale, const MeshPtr& mesh, const ColliderParameter& parameter);
     ~MeshCollider();
 
 private:

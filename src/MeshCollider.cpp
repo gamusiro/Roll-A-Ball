@@ -1,11 +1,12 @@
 #include "MeshCollider.h"
 
-MeshCollider::MeshCollider(const glm::vec3& scale, const Mesh& mesh, const ColliderParameter& parameter)
+MeshCollider::MeshCollider(const Entity* entity, const glm::vec3& scale, const MeshPtr& mesh, const ColliderParameter& parameter)
+    : Collider(entity)
 {
     m_Mesh = new btTriangleMesh();
-    const std::vector<Vertex> vertices = mesh.GetVertices();
-    const std::vector<uint32_t> indices = mesh.GetIndices();
-    for(int i = 0; i < mesh.GetIndexCount(); i += 3)
+    const std::vector<Vertex> vertices = mesh->GetVertices();
+    const std::vector<uint32_t> indices = mesh->GetIndices();
+    for(int i = 0; i < mesh->GetIndexCount(); i += 3)
     {
         btVector3 vertex1 = VEC3_GLM_2_BT(vertices[indices[i + 0]].Position);
         btVector3 vertex2 = VEC3_GLM_2_BT(vertices[indices[i + 1]].Position);

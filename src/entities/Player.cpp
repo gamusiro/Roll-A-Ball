@@ -11,9 +11,11 @@ Player::Player(ScenePtr scene)
 
 void Player::Awake()
 {
-    Mesh& mesh = AddComponent<Mesh>(*MeshManager::Instance().Create(MODELS_PATH "Sphere.obj"));
+    MeshPtr mesh = MeshManager::Instance().Create(MODELS_PATH "Sphere.obj");
     AddComponent<MeshRenderer>(mesh);
-    AddComponent<Shader>(SHADERS_PATH "default.vert", SHADERS_PATH "white.frag");
+    
+    Material& material = AddComponent<Material>();
+    material.SetAlbedo(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
     Transform& transform = GetComponent<Transform>();
 

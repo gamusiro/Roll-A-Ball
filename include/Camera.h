@@ -3,9 +3,13 @@
 #include "Config.h"
 
 #include "Transform.h"
+#include "Component.h"
 
-class Camera
+class Camera : public Component
 {
+protected:
+	Camera(const Entity* entity) : Component(entity) {}
+
 public:
 	virtual ~Camera() = default;
     inline const glm::mat4 GetProjectionMatrix() const { return m_ProjectionMatrix; }
@@ -24,8 +28,8 @@ protected:
 class OrthographicsCamera : public Camera
 {
 public:
-	OrthographicsCamera();
-	OrthographicsCamera(float left, float right, float bottom, float top);
+	OrthographicsCamera(const Entity* entity);
+	OrthographicsCamera(const Entity* entity, float left, float right, float bottom, float top);
 	~OrthographicsCamera() = default;
 
 protected:
@@ -41,8 +45,8 @@ private:
 class PerspectiveCamera : public Camera
 {
 public:
-	PerspectiveCamera();
-	PerspectiveCamera(float fovy, float aspect, float znear, float zfar);
+	PerspectiveCamera(const Entity* entity);
+	PerspectiveCamera(const Entity* entity, float fovy, float aspect, float znear, float zfar);
 	~PerspectiveCamera() = default;
 
 protected:

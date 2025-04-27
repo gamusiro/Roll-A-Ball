@@ -18,7 +18,7 @@ public:
     template<typename Comp, typename... Args>
     Comp& AddComponent(Args&&... args)
     {
-        return m_Scene->addComponent<Comp>(m_ID, std::forward<Args>(args)...);
+        return m_Scene->addComponent<Comp>(m_ID, this, std::forward<Args>(args)...);
     }
 
     template<typename Comp>

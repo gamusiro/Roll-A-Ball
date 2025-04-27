@@ -2,6 +2,8 @@
 #define ROLL_A_BALL_INCLUDE_MESH_H_
 #include "Config.h"
 
+#include "Component.h"
+
 struct Vertex
 {
     glm::vec3 Position;

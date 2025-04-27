@@ -4,6 +4,7 @@
 
 #include "Utils.h"
 #include "Physics.h"
+#include "Component.h"
 
 typedef struct
 {
@@ -12,9 +13,10 @@ typedef struct
     float friction;
 } ColliderParameter;
 
-class Collider
+class Collider : public Component
 {
 public:
+    Collider(const Entity* entity);
     virtual ~Collider();
 
 protected:

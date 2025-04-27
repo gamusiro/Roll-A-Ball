@@ -11,9 +11,11 @@ Wall::Wall(ScenePtr scene)
 
 void Wall::Awake()
 {
-    Mesh& mesh = AddComponent<Mesh>(*MeshManager::Instance().Create(MODELS_PATH "Cube.obj"));
+    MeshPtr mesh = MeshManager::Instance().Create(MODELS_PATH "Cube.obj");
     AddComponent<MeshRenderer>(mesh);
-    AddComponent<Shader>(SHADERS_PATH "default.vert", SHADERS_PATH "red.frag");
+
+    Material& material = AddComponent<Material>();
+    material.SetAlbedo(glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
 
     Transform& transform = GetComponent<Transform>();
 

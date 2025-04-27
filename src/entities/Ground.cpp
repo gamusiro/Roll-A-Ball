@@ -11,9 +11,11 @@ Ground::Ground(ScenePtr scene)
 
 void Ground::Awake()
 {
-    Mesh& mesh = AddComponent<Mesh>(*MeshManager::Instance().Create(MODELS_PATH "Plane.obj"));
+    MeshPtr mesh = MeshManager::Instance().Create(MODELS_PATH "Plane.obj");
     AddComponent<MeshRenderer>(mesh);
-    AddComponent<Shader>(SHADERS_PATH "default.vert", SHADERS_PATH "green.frag");
+    
+    Material& material = AddComponent<Material>();
+    material.SetAlbedo(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 
     Transform& transform = GetComponent<Transform>();
 

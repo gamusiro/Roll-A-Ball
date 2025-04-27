@@ -6,11 +6,14 @@
 #include <glm/gtx/euler_angles.hpp>
 #include <glm/gtx/quaternion.hpp>
 
-class Transform
+#include "Component.h"
+
+class Transform : public Component
 {
 public:
-	Transform()
-		: m_Parent(nullptr),
+	Transform(const Entity* entity)
+		: Component(entity),
+		m_Parent(nullptr),
 		m_Position(glm::vec3(0.0f, 0.0f, 0.0f)),
 		m_Rotation(glm::vec3(0.0f, 0.0f, 0.0f)),
 		m_Scale(glm::vec3(1.0f, 1.0f, 1.0f))
@@ -18,8 +21,9 @@ public:
 		calculate();
 	}
 
-	Transform(Transform* parent)
-		: m_Parent(parent),
+	Transform(const Entity* entity, Transform* parent)
+		: Component(entity),
+		m_Parent(parent),
 		m_Position(glm::vec3(0.0f, 0.0f, 0.0f)),
 		m_Rotation(glm::vec3(0.0f, 0.0f, 0.0f)),
 		m_Scale(glm::vec3(1.0f, 1.0f, 1.0f))
@@ -27,8 +31,9 @@ public:
 		calculate();
 	}
 
-	Transform(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale)
-		: m_Parent(nullptr),
+	Transform(const Entity* entity, const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale)
+		: Component(entity),
+		m_Parent(nullptr),
 		m_Position(position),
 		m_Rotation(rotation),
 		m_Scale(scale)
@@ -36,8 +41,9 @@ public:
 		calculate();
 	}
 
-	Transform(const glm::vec3& position, const glm::quat& rotation, const glm::vec3& scale)
-		: m_Parent(nullptr),
+	Transform(const Entity* entity, const glm::vec3& position, const glm::quat& rotation, const glm::vec3& scale)
+		: Component(entity),
+		m_Parent(nullptr),
 		m_Position(position),
 		m_Rotation(rotation),
 		m_Scale(scale)
@@ -45,8 +51,9 @@ public:
 		calculate();
 	}
 
-	Transform(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale, Transform* parent)
-		: m_Parent(parent),
+	Transform(const Entity* entity, const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale, Transform* parent)
+		: Component(entity),
+		m_Parent(parent),
 		m_Position(position),
 		m_Rotation(rotation),
 		m_Scale(scale)
@@ -54,8 +61,9 @@ public:
 		calculate();
 	}
 
-	Transform(const glm::vec3& position, const glm::quat& rotation, const glm::vec3& scale, Transform* parent)
-		: m_Parent(parent),
+	Transform(const Entity* entity, const glm::vec3& position, const glm::quat& rotation, const glm::vec3& scale, Transform* parent)
+		: Component(entity),
+		m_Parent(parent),
 		m_Position(position),
 		m_Rotation(rotation),
 		m_Scale(scale)

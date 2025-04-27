@@ -10,6 +10,7 @@
 #include <memory>
 #include <unordered_map>
 #include <map>
+#include <queue>
 
 // Phyisics
 #include <btBulletDynamicsCommon.h>
@@ -51,8 +52,18 @@
 #define SHADERS_PATH ASSETS_PATH "shaders/"
 #define MODELS_PATH ASSETS_PATH "models/"
 
+// Shaders
+#define SHADER_DEFAULT_3D "default3D"
+
 
 class Scene;
+class Entity;
+class Mesh;
+class Shader;
+
 using ScenePtr = std::shared_ptr<Scene>;
+using MeshPtr = std::shared_ptr<Mesh>;
+using ShaderPtr = std::shared_ptr<Shader>;
+
 
 #endif //!ROLL_A_BALL_INCLUDE_CONFIG_H_

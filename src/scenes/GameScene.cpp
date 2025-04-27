@@ -1,8 +1,13 @@
 #include "scenes/GameScene.h"
+#include "ShaderManager.h"
 
 bool GameScene::Init()
 {
     LOG_CORE_INFO("GameScene::Init");
+
+    // Load shaders
+    ShaderManager& sm = ShaderManager::Instance();
+    sm.LoadShader(SHADER_DEFAULT_3D, "default.vert", "default.frag");
     
     // Player
     {
@@ -97,16 +102,18 @@ void GameScene::Render() const
     glm::mat4 view = m_MainCamera->GetViewMatrix();
     glm::mat4 projection = m_MainCamera->GetComponent<PerspectiveCamera>().GetProjectionMatrix();
 
-    auto v = View<Transform, Shader, MeshRenderer>();
+    auto v = View<Transform, Material, MeshRenderer>();
     for(auto entity : v)
     {
         const Transform& transform = v.get<Transform>(entity);
-        const Shader& shader = v.get<Shader>(entity);
+        const Material& material = v.get<Material>(entity);
         const MeshRenderer& renderer = v.get<MeshRenderer>(entity);
 
-        shader.Bind();
-        shader.Set("u_Transform", transform.GetWorldMatrix());
-        shader.Set("u_ViewProjection", projection * m_MainCamera->GetViewMatrix());
+        ShaderPtr shader = material.GetShader();
+        shader->Bind();
+        shader->Set("u_Albedo", material.GetAlbedo());
+        shader->Set("u_Transform", transform.GetWorldMatrix());
+        shader->Set("u_ViewProjection", projection * m_MainCamera->GetViewMatrix());
 
         renderer.Render();
     }
