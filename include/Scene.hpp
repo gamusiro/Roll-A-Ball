@@ -11,6 +11,7 @@ std::unique_ptr<T> Scene::Instantiate()
     std::unique_ptr<T> ret = std::make_unique<T>(shared_from_this());
     Entity* entity = static_cast<Entity*>(ret.get());
     entity->AddComponent<Transform>();
+    entity->AddComponent<Tag>();
     entity->Awake();
     m_StartUpEntities.push_back(entity);
     return ret;
@@ -25,6 +26,7 @@ inline std::unique_ptr<T> Scene::Instantiate(
     std::unique_ptr<T> ret = std::make_unique<T>(shared_from_this());
     Entity* entity = static_cast<Entity*>(ret.get());
     entity->AddComponent<Transform>(position, euler, scale);
+    entity->AddComponent<Tag>();
     entity->Awake();
     m_StartUpEntities.push_back(entity);
     return ret;
@@ -39,6 +41,7 @@ inline std::unique_ptr<T> Scene::Instantiate(
     std::unique_ptr<T> ret = std::make_unique<T>(shared_from_this());
     Entity* entity = static_cast<Entity*>(ret.get());
     entity->AddComponent<Transform>(position, rotation, scale);
+    entity->AddComponent<Tag>();
     entity->Awake();
     m_StartUpEntities.push_back(entity);
     return ret;

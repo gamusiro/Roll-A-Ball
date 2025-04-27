@@ -13,6 +13,9 @@ public:
     virtual void Awake(){}
     virtual void Start(){}
     virtual void Update(){}
+    virtual void OnCollisionEnter(const Entity* entity){}
+    virtual void OnCollisionStay(const Entity* entity){}
+    virtual void OnCollisionExit(const Entity* entity){}
 
 public:
     template<typename Comp, typename... Args>
@@ -28,13 +31,13 @@ public:
     }
 
     template<typename Comp>
-    bool HasComponent()
+    bool HasComponent() const
     {
         return m_Scene->hasComponent<Comp>(m_ID);
     }
 
     template<typename Comp>
-    Comp& GetComponent()
+    Comp& GetComponent() const
     {
         return m_Scene->getComponent<Comp>(m_ID);
     }

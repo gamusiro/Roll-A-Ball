@@ -17,6 +17,9 @@ void Player::Awake()
     Material& material = AddComponent<Material>();
     material.SetAlbedo(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
+    Tag& tag = GetComponent<Tag>();
+    tag.SetName("Player");
+
     Transform& transform = GetComponent<Transform>();
 
     ColliderParameter param;
@@ -28,6 +31,18 @@ void Player::Awake()
     const float radius = 0.5f;
     SphereCollider& collider = AddComponent<SphereCollider>(radius, param);
     AddComponent<RigidBody>(collider);
+}
+
+void Player::OnCollisionEnter(const Entity* entity)
+{
+    Tag& tag = entity->GetComponent<Tag>();
+    std::cout << "Player::OnCollisionEnter: " << tag.GetName() << std::endl;
+}
+
+void Player::OnCollisionExit(const Entity* entity)
+{
+    Tag& tag = entity->GetComponent<Tag>();
+    std::cout << "Player::OnCollisionExit: " << tag.GetName() << std::endl;
 }
 
 void Player::KeyPressed(const KeyEventPressed& e)

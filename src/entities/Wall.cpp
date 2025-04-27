@@ -17,6 +17,9 @@ void Wall::Awake()
     Material& material = AddComponent<Material>();
     material.SetAlbedo(glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
 
+    Tag& tag = GetComponent<Tag>();
+    tag.SetName("Wall");
+
     Transform& transform = GetComponent<Transform>();
 
     ColliderParameter param;

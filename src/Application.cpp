@@ -21,7 +21,7 @@ void Application::Run()
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             // Physics
-            Physics::Instance().update();
+            Physics::Instance().update(sceneManager.m_CurScene->m_Registry);
 
             // Scene
             sceneManager.update();

@@ -20,10 +20,12 @@ public:
     virtual ~Collider();
 
 protected:
+    btCollisionWorld::ContactResultCallback* m_Callback;
     btCollisionShape* m_Shape;
     btRigidBody* m_RigidBody;
 
 private:
+    friend class Physics;
     friend class RigidBody;
 };
 

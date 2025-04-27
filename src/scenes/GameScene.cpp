@@ -42,7 +42,7 @@ bool GameScene::Init()
 
     // Wall 01
     {
-        glm::vec3 position(-10.0f, 0.0f, 0.0f);
+        glm::vec3 position(-10.0f, 0.5f, 0.0f);
         glm::vec3 euler(0.0f);
         glm::vec3 scale(0.5f, 1.0f, 20.5f);
         m_Walls.push_back(Instantiate<Wall>(position, euler, scale));
@@ -50,7 +50,7 @@ bool GameScene::Init()
 
     // Wall 02
     {
-        glm::vec3 position(10.0f, 0.0f, 0.0f);
+        glm::vec3 position(10.0f, 0.5f, 0.0f);
         glm::vec3 euler(0.0f);
         glm::vec3 scale(0.5f, 1.0f, 20.5f);
         m_Walls.push_back(Instantiate<Wall>(position, euler, scale));
@@ -58,7 +58,7 @@ bool GameScene::Init()
 
     // Wall 03
     {
-        glm::vec3 position(0.0f, 0.0f, -10.0f);
+        glm::vec3 position(0.0f, 0.5f, -10.0f);
         glm::vec3 euler(0.0f);
         glm::vec3 scale(20.5f, 1.0f, 0.5f);
         m_Walls.push_back(Instantiate<Wall>(position, euler, scale));
@@ -66,7 +66,7 @@ bool GameScene::Init()
 
     // wall 04
     {
-        glm::vec3 position(0.0f, 0.0f, 10.0f);
+        glm::vec3 position(0.0f, 0.5f, 10.0f);
         glm::vec3 euler(0.0f);
         glm::vec3 scale(20.5f, 1.0f, 0.5f);
         m_Walls.push_back(Instantiate<Wall>(position, euler, scale));

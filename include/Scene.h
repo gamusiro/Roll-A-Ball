@@ -17,6 +17,7 @@
 #include "MeshCollider.h"
 #include "RigidBody.h"
 #include "Material.h"
+#include "Tag.h"
 
 class Scene : public std::enable_shared_from_this<Scene>
 {
@@ -117,6 +118,7 @@ private:
     entt::dispatcher m_Dispatcher;
 
 private:
+    friend class Application;
     friend class Entity;
 };
 
