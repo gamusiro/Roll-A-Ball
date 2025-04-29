@@ -15,7 +15,7 @@ void Ground::Awake()
     AddComponent<MeshRenderer>(mesh);
     
     Material& material = AddComponent<Material>();
-    material.SetAlbedo(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+    material.SetAlbedo(glm::vec4(50.0f / 255.0f, 130.0f / 255.0f, 246.0f / 255.0f, 1.0f));
 
     Tag& tag = GetComponent<Tag>();
     tag.SetName("Ground");

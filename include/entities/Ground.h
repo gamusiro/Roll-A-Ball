@@ -9,7 +9,7 @@ public:
     Ground(ScenePtr scene);
 
 public:
-    void Awake();\
+    void Awake();
 };
 
 #endif //!ROLL_A_BALL_INCLUDE_ENTITIES_GROUND_H_

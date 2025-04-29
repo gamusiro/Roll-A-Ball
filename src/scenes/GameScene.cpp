@@ -20,10 +20,10 @@ bool GameScene::Init()
     
     // Camera
     {
-        glm::vec3 position(0.0f, 7.0f, 15.0f);
-        glm::vec3 euler = glm::vec3(glm::radians(-20.0f), 0.0f, 0.0f);
-        //glm::vec3 position(0.0f, 25.0f, 0.0f);
-        //glm::vec3 euler = glm::vec3(glm::radians(-89.0f), 0.0f, 0.0f);
+        //glm::vec3 position(0.0f, 7.0f, 15.0f);
+        //glm::vec3 euler = glm::vec3(glm::radians(-20.0f), 0.0f, 0.0f);
+        glm::vec3 position(0.0f, 25.0f, 9.0f);
+        glm::vec3 euler = glm::vec3(glm::radians(-89.0f), 0.0f, 0.0f);
         glm::vec3 scale(1.0f);
         m_MainCamera = Instantiate<MainCamera>(position, euler, scale);
 
@@ -44,7 +44,7 @@ bool GameScene::Init()
     {
         glm::vec3 position(-10.0f, 0.5f, 0.0f);
         glm::vec3 euler(0.0f);
-        glm::vec3 scale(0.5f, 1.0f, 20.5f);
+        glm::vec3 scale(0.5f, 1.0f, 10.5f);
         m_Walls.push_back(Instantiate<Wall>(position, euler, scale));
     }
 
@@ -52,7 +52,7 @@ bool GameScene::Init()
     {
         glm::vec3 position(10.0f, 0.5f, 0.0f);
         glm::vec3 euler(0.0f);
-        glm::vec3 scale(0.5f, 1.0f, 20.5f);
+        glm::vec3 scale(0.5f, 1.0f, 10.5f);
         m_Walls.push_back(Instantiate<Wall>(position, euler, scale));
     }
 
@@ -60,7 +60,7 @@ bool GameScene::Init()
     {
         glm::vec3 position(0.0f, 0.5f, -10.0f);
         glm::vec3 euler(0.0f);
-        glm::vec3 scale(20.5f, 1.0f, 0.5f);
+        glm::vec3 scale(10.5f, 1.0f, 0.5f);
         m_Walls.push_back(Instantiate<Wall>(position, euler, scale));
     }
 
@@ -68,8 +68,16 @@ bool GameScene::Init()
     {
         glm::vec3 position(0.0f, 0.5f, 10.0f);
         glm::vec3 euler(0.0f);
-        glm::vec3 scale(20.5f, 1.0f, 0.5f);
+        glm::vec3 scale(10.5f, 1.0f, 0.5f);
         m_Walls.push_back(Instantiate<Wall>(position, euler, scale));
+    }
+
+    // Collectable
+    {
+        glm::vec3 position(0.0f, 0.5f, 5.0f);
+        glm::vec3 euler(glm::vec3(0.0f, glm::radians(45.0f), 0.0f));
+        glm::vec3 scale(0.5f);
+        m_Collectables = Instantiate<Collectable>(position, euler, scale);
     }
 
     return true;
@@ -94,6 +102,7 @@ void GameScene::Update()
 
     m_Player->Update();
     m_MainCamera->Update();
+    m_Collectables->Update();
 }
 
 void GameScene::Render() const

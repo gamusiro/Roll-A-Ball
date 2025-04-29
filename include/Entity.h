@@ -16,9 +16,9 @@ public:
     virtual void OnCollisionEnter(const Entity* entity){}
     virtual void OnCollisionStay(const Entity* entity){}
     virtual void OnCollisionExit(const Entity* entity){}
-    virtual void OnTriggerEnter(const Entity* entity) {}
-    virtual void OnTriggerStay(const Entity* entity) {}
-    virtual void OnTriggerExit(const Entity* entity) {}
+    virtual void OnTriggerEnter(const Entity* entity){}
+    virtual void OnTriggerStay(const Entity* entity){}
+    virtual void OnTriggerExit(const Entity* entity){}
 
 public:
     template<typename Comp, typename... Args>

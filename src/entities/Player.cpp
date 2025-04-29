@@ -15,7 +15,7 @@ void Player::Awake()
     AddComponent<MeshRenderer>(mesh);
     
     Material& material = AddComponent<Material>();
-    material.SetAlbedo(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+    material.SetAlbedo(glm::vec4(1.0f));
 
     Tag& tag = GetComponent<Tag>();
     tag.SetName("Player");

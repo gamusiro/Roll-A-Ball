@@ -118,7 +118,7 @@ private:
     entt::dispatcher m_Dispatcher;
 
 private:
-    friend class Application;
+    friend class SceneManager;
     friend class Entity;
 };
 

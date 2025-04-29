@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 
 #include "Scene.h"
+#include "Physics.h"
 #include "MeshManager.h"
 
 SceneManager& SceneManager::Instance()
@@ -22,6 +23,11 @@ void SceneManager::LoadScene(std::shared_ptr<Scene> scene)
 
 void SceneManager::update()
 {
+    // Physics
+    Physics::Instance().update(m_CurScene->m_Registry);
+
+    // 
+
     m_CurScene->Update();
 }
 
