@@ -6,45 +6,44 @@
 #include "Entity.h"
 
 template<typename T>
-std::unique_ptr<T> Scene::Instantiate()
+inline T* Scene::Instantiate(const std::string& name)
 {
-    std::unique_ptr<T> ret = std::make_unique<T>(shared_from_this());
-    Entity* entity = static_cast<Entity*>(ret.get());
-    entity->AddComponent<Transform>();
-    entity->AddComponent<Tag>();
-    entity->Awake();
-    m_StartUpEntities.push_back(entity);
-    return ret;
+    std::unique_ptr<Entity> ret = std::make_unique<T>(shared_from_this());
+    ret->AddComponent<Transform>(position, euler, scale);
+    Tag& tag = ret->AddComponent<Tag>();
+    ret->Awake();
+    m_Entities.insert({ name, std::move(ret) });
+    return reinterpret_cast<T*>(ret.get());
 }
 
 template<typename T>
-inline std::unique_ptr<T> Scene::Instantiate(
+inline T* Scene::Instantiate(
+    const std::string& name,
     const glm::vec3& position,
     const glm::vec3& euler,
     const glm::vec3& scale)
 {
-    std::unique_ptr<T> ret = std::make_unique<T>(shared_from_this());
-    Entity* entity = static_cast<Entity*>(ret.get());
-    entity->AddComponent<Transform>(position, euler, scale);
-    entity->AddComponent<Tag>();
-    entity->Awake();
-    m_StartUpEntities.push_back(entity);
-    return ret;
+    std::unique_ptr<Entity> ret = std::make_unique<T>(shared_from_this());
+    ret->AddComponent<Transform>(position, euler, scale);
+    Tag& tag = ret->AddComponent<Tag>();
+    ret->Awake();
+    m_Entities.insert({ name, std::move(ret) });
+    return reinterpret_cast<T*>(ret.get());
 }
 
 template<typename T>
-inline std::unique_ptr<T> Scene::Instantiate(
+inline T* Scene::Instantiate(
+    const std::string& name,
     const glm::vec3& position,
     const glm::quat& rotation,
     const glm::vec3& scale)
 {
-    std::unique_ptr<T> ret = std::make_unique<T>(shared_from_this());
-    Entity* entity = static_cast<Entity*>(ret.get());
-    entity->AddComponent<Transform>(position, rotation, scale);
-    entity->AddComponent<Tag>();
-    entity->Awake();
-    m_StartUpEntities.push_back(entity);
-    return ret;
+    std::unique_ptr<Entity> ret = std::make_unique<T>(shared_from_this());
+    ret->AddComponent<Transform>(position, euler, scale);
+    Tag& tag = ret->AddComponent<Tag>();
+    ret->Awake();
+    m_Entities.insert({ name, std::move(ret) });
+    return reinterpret_cast<T*>(ret.get());
 }
 
 #endif //!ROLL_A_BALL_INCLUDE_SCENE_HPP_

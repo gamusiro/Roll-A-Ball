@@ -36,9 +36,9 @@ void Collectable::Awake()
 void Collectable::Update()
 {
     Transform& transform = GetComponent<Transform>();
-    glm::vec3 euler = transform.GetRotationEuler();
-    euler.y += glm::radians(1.0f);
-    transform.SetRotation(euler);
+    glm::quat currentQuat = transform.GetRotationQuat();
+    glm::quat deltaRotXY = glm::angleAxis(glm::radians(1.0f), glm::vec3(1.0f, 1.0f, 0.0f));
+    transform.SetRotation(deltaRotXY * currentQuat);
 }
 
 void Collectable::OnTriggerEnter(const Entity* entity)
@@ -47,5 +47,6 @@ void Collectable::OnTriggerEnter(const Entity* entity)
     if(tag.GetName() == "Player")
     {
         std::cout << "Hit Player object!!!" << std::endl;
+        RemoveComponent<MeshRenderer>();
     }
 }

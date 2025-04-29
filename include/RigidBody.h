@@ -13,7 +13,30 @@ public:
 
 public:
     void AddImpulse(const glm::vec3& impulse);
-    inline const glm::vec3 GetPosition() const { return VEC3_BT_2_GLM(m_RigidBody->getWorldTransform().getOrigin()); }
+    inline const glm::vec3 GetPosition() const 
+    {
+        return VEC3_BT_2_GLM(m_RigidBody->getWorldTransform().getOrigin()); 
+    }
+    
+    inline const glm::quat GetRotation() const 
+    {
+        btQuaternion quat = m_RigidBody->getWorldTransform().getRotation();
+        return QUAT_BT_2_GLM(quat);
+    }
+
+    inline void SetPosition(const glm::vec3& position) 
+    { 
+        btTransform transform = m_RigidBody->getWorldTransform();
+        transform.setOrigin(VEC3_GLM_2_BT(position));
+        m_RigidBody->setWorldTransform(transform);
+    }
+
+    inline void SetRotation(const glm::quat& quat)
+    {
+        btTransform transform = m_RigidBody->getWorldTransform();
+        transform.setRotation(QUAT_GLM_2_BT(quat));
+        m_RigidBody->setWorldTransform(transform);
+    }
 
 private:
     btRigidBody* m_RigidBody;

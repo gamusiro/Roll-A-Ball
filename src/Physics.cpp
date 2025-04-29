@@ -39,7 +39,16 @@ void Physics::update(entt::registry& registry, float timeStep)
     m_LastTrigger = m_CurrentTrigger;
     m_CurrentTrigger.clear();
 
+    // Physics simulation
     m_DynamicsWorld->stepSimulation(timeStep);
+
+    auto view = registry.view<Transform, RigidBody>();
+    for(auto entity : view)
+    {
+        Transform& transform = view.get<Transform>(entity);
+        RigidBody& rigidBody = view.get<RigidBody>(entity);
+        transform.SetPosition(rigidBody.GetPosition());
+    }
     
     {// Box Colliders
         auto bcView = registry.view<Tag, BoxCollider>();
@@ -83,7 +92,7 @@ void Physics::update(entt::registry& registry, float timeStep)
             pair.first->OnCollisionExit(pair.second);
     }
 
-    // Currnet Collisions
+    // Currnet Trigger Collisions
     for (const auto& pair : m_CurrentTrigger)
     {
         bool wasColliding = m_LastTrigger.find(pair) != m_LastTrigger.end();
@@ -93,7 +102,7 @@ void Physics::update(entt::registry& registry, float timeStep)
             pair.first->OnTriggerStay(pair.second);
     }
 
-    // Last Collisions
+    // Last Trigger Collisions
     for (const auto& pair : m_LastTrigger)
     {
         bool nowColliding = m_CurrentTrigger.find(pair) != m_CurrentTrigger.end();

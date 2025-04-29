@@ -17,13 +17,6 @@ public:
     void Update() override;
     void Render() const override;
     void Term() override;
-
-private:
-    std::unique_ptr<Player> m_Player;
-    std::unique_ptr<MainCamera> m_MainCamera;
-    std::unique_ptr<Ground> m_Ground;
-    std::unique_ptr<Collectable> m_Collectables;
-    std::vector<std::unique_ptr<Wall>> m_Walls;
 };
 
 

@@ -14,22 +14,17 @@ bool GameScene::Init()
         glm::vec3 position(0.0f, 0.5f, 0.0f);
         glm::vec3 euler(0.0f);
         glm::vec3 scale(1.0f);
-        m_Player = Instantiate<Player>(position, euler, scale);
-        AddEventListener<KeyEventPressed, Player, &Player::KeyPressed>(*m_Player.get());
+        Player* player = Instantiate<Player>("Player", position, euler, scale);
     }
     
     // Camera
     {
         //glm::vec3 position(0.0f, 7.0f, 15.0f);
         //glm::vec3 euler = glm::vec3(glm::radians(-20.0f), 0.0f, 0.0f);
-        glm::vec3 position(0.0f, 25.0f, 9.0f);
+        glm::vec3 position(0.0f, 25.0f, 0.0f);
         glm::vec3 euler = glm::vec3(glm::radians(-89.0f), 0.0f, 0.0f);
         glm::vec3 scale(1.0f);
-        m_MainCamera = Instantiate<MainCamera>(position, euler, scale);
-
-        Transform& player = m_Player->GetComponent<Transform>();
-        Transform& camera = m_MainCamera->GetComponent<Transform>();
-        camera.SetParent(&player);
+        Instantiate<MainCamera>("MainCamera", position, euler, scale);
     }
     
     // Ground
@@ -37,7 +32,7 @@ bool GameScene::Init()
         glm::vec3 position(0.0f);
         glm::vec3 euler(0.0f);
         glm::vec3 scale(2.0f, 1.0f, 2.0f);
-        m_Ground = Instantiate<Ground>(position, euler, scale);
+        Instantiate<Ground>("Ground", position, euler, scale);
     }
 
     // Wall 01
@@ -45,7 +40,7 @@ bool GameScene::Init()
         glm::vec3 position(-10.0f, 0.5f, 0.0f);
         glm::vec3 euler(0.0f);
         glm::vec3 scale(0.5f, 1.0f, 10.5f);
-        m_Walls.push_back(Instantiate<Wall>(position, euler, scale));
+        Instantiate<Wall>("Wall_01", position, euler, scale);
     }
 
     // Wall 02
@@ -53,7 +48,7 @@ bool GameScene::Init()
         glm::vec3 position(10.0f, 0.5f, 0.0f);
         glm::vec3 euler(0.0f);
         glm::vec3 scale(0.5f, 1.0f, 10.5f);
-        m_Walls.push_back(Instantiate<Wall>(position, euler, scale));
+        Instantiate<Wall>("Wall_02", position, euler, scale);
     }
 
     // Wall 03
@@ -61,7 +56,7 @@ bool GameScene::Init()
         glm::vec3 position(0.0f, 0.5f, -10.0f);
         glm::vec3 euler(0.0f);
         glm::vec3 scale(10.5f, 1.0f, 0.5f);
-        m_Walls.push_back(Instantiate<Wall>(position, euler, scale));
+        Instantiate<Wall>("Wall_03", position, euler, scale);
     }
 
     // wall 04
@@ -69,15 +64,19 @@ bool GameScene::Init()
         glm::vec3 position(0.0f, 0.5f, 10.0f);
         glm::vec3 euler(0.0f);
         glm::vec3 scale(10.5f, 1.0f, 0.5f);
-        m_Walls.push_back(Instantiate<Wall>(position, euler, scale));
+        Instantiate<Wall>("Wall_04", position, euler, scale);
     }
 
-    // Collectable
-    {
-        glm::vec3 position(0.0f, 0.5f, 5.0f);
-        glm::vec3 euler(glm::vec3(0.0f, glm::radians(45.0f), 0.0f));
+    // Collectables
+    const float deg = 360.0f / 12.0f;
+    for(int i = 0; i < 12; ++i) {
+        glm::vec3 position(cosf(glm::radians(deg * float(i))) * 5.0f, 0.5f, sinf(glm::radians(deg * float(i))) * 5.0f);
+        glm::vec3 euler(0.0f);
         glm::vec3 scale(0.5f);
-        m_Collectables = Instantiate<Collectable>(position, euler, scale);
+
+        std::stringstream ss;
+        ss << "Collectable_" << std::setw(2) << std::setfill('0') << i;
+        Instantiate<Collectable>(ss.str(), position, euler, scale);
     }
 
     return true;
@@ -85,31 +84,16 @@ bool GameScene::Init()
 
 void GameScene::Update()
 {
-    if(!m_StartUpEntities.empty())
-    {
-        for(auto entity : m_StartUpEntities)
-            entity->Start();
-        m_StartUpEntities.clear();
-    }
-
-    auto view = View<Transform, RigidBody>();
-    for(auto entity : view)
-    {
-        Transform& transform = view.get<Transform>(entity);
-        RigidBody& rigidBody = view.get<RigidBody>(entity);
-        transform.SetPosition(rigidBody.GetPosition());
-    }
-
-    m_Player->Update();
-    m_MainCamera->Update();
-    m_Collectables->Update();
+    for(auto& pair : m_Entities)
+        pair.second->Update();
 }
 
 void GameScene::Render() const
 {
     // projection matrix
-    glm::mat4 view = m_MainCamera->GetViewMatrix();
-    glm::mat4 projection = m_MainCamera->GetComponent<PerspectiveCamera>().GetProjectionMatrix();
+    MainCamera* camera = FindEntity<MainCamera>("MainCamera");
+    glm::mat4 view = camera->GetViewMatrix();
+    glm::mat4 projection = camera->GetComponent<PerspectiveCamera>().GetProjectionMatrix();
 
     auto v = View<Transform, Material, MeshRenderer>();
     for(auto entity : v)
@@ -122,7 +106,7 @@ void GameScene::Render() const
         shader->Bind();
         shader->Set("u_Albedo", material.GetAlbedo());
         shader->Set("u_Transform", transform.GetWorldMatrix());
-        shader->Set("u_ViewProjection", projection * m_MainCamera->GetViewMatrix());
+        shader->Set("u_ViewProjection", projection * view);
 
         renderer.Render();
     }
@@ -131,5 +115,4 @@ void GameScene::Render() const
 void GameScene::Term()
 {
     LOG_CORE_INFO("GameScene::Term");
-    m_StartUpEntities.clear();
 }

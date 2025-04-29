@@ -34,16 +34,18 @@ public:
 
 protected:
     template<typename T>
-    inline std::unique_ptr<T> Instantiate();
+    inline T* Instantiate(const std::string& name);
 
     template<typename T>
-    inline std::unique_ptr<T> Instantiate(
+    inline T* Instantiate(
+        const std::string& name,
         const glm::vec3& position,
         const glm::vec3& euler, 
         const glm::vec3& scale);
 
     template<typename T>
-    inline std::unique_ptr<T> Instantiate(
+    inline T* Instantiate(
+        const std::string& name,
         const glm::vec3& position,
         const glm::quat& rotation,
         const glm::vec3& scale);
@@ -99,23 +101,38 @@ public:
 
 protected:
     template<typename Event, typename Value, auto Method>
-    void AddEventListener(Value& value)
+    void AddEventListener(Value* value)
     {
-        m_Dispatcher.sink<Event>().connect<Method>(value);
+        m_Dispatcher.sink<Event>().connect<Method>(*value);
     }
 
     template<typename Event, typename Value, auto Method>
-    void RemoveEventListener(Value& value)
+    void RemoveEventListener(Value* value)
     {
-        m_Dispatcher.sink<Event>().disconnect<Method>(value);
+        m_Dispatcher.sink<Event>().disconnect<Method>(*value);
     }
 
-protected:
-    std::vector<Entity*> m_StartUpEntities;
+    template<typename T>
+    T* FindEntity(const char* name) const
+    {
+        auto it = m_Entities.find(name);
+        if (it == m_Entities.end())
+            return nullptr;
+        return static_cast<T*>(it->second.get());
+    }
+
+    template<typename T>
+    T* FindEntity(const std::string& name) const
+    {
+        return FindEntity<T>(name.c_str());
+    }
 
 private:
     entt::registry m_Registry;
     entt::dispatcher m_Dispatcher;
+
+protected:
+    std::unordered_map<std::string, std::unique_ptr<Entity>> m_Entities;
 
 private:
     friend class SceneManager;

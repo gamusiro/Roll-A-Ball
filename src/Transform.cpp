@@ -1,25 +1,25 @@
 #include "Transform.h"
 
 void Transform::SetPosition(const glm::vec3& position) 
-{ 
+{
     m_Position = position;
     calculate();
 }
 
 void Transform::SetRotation(const glm::vec3& euler) 
-{ 
-    m_Rotation = glm::yawPitchRoll(euler.y, euler.x, euler.z);
+{
+    m_Rotation = glm::yawPitchRoll(glm::radians(euler.y), glm::radians(euler.x), glm::radians(euler.z));
     calculate();
 }
 
 void Transform::SetRotation(const glm::quat& quat) 
-{ 
+{
     m_Rotation = quat;
     calculate();
 }
 
 void Transform::SetScale(const glm::vec3& scale) 
-{ 
+{
     m_Scale = scale;
     calculate();
 }

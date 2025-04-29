@@ -73,7 +73,7 @@ public:
 
 public:
 	inline const glm::vec3 GetPosition() const { return m_Position; }
-	inline const glm::vec3 GetRotationEuler() const { return glm::eulerAngles(m_Rotation); }
+	inline const glm::vec3 GetRotationEuler() const { return glm::degrees(glm::eulerAngles(m_Rotation)); }
 	inline const glm::quat GetRotationQuat() const { return m_Rotation; }
 	inline const glm::vec3 GetScale () const { return m_Scale; }
 	inline const glm::vec3 GetForward() const { return m_ForwardDir; }

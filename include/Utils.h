@@ -29,7 +29,6 @@
 #define QUAT_GLM_2_BT(quat) btQuaternion(quat.w, quat.x, quat.y, quat.z)
 #define VEC3_BT_2_GLM(vec) glm::vec3(vec.x(), vec.y(), vec.z())
 #define VEC4_BT_2_GLM(vec) glm::vec4(vec.x(), vec.y(), vec.z(), vec.w())
-#define QUAT_BT_2_GLM(quat) glm::quat(quat.w(), quat.x(), quat.y(), quat.z())
-
+#define QUAT_BT_2_GLM(quat) glm::quat((quat).w(), (quat).x(), (quat).y(), (quat).z())
 
 #endif //!ROLL_A_BALL_INCLUDE_UTILS_H_

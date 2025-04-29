@@ -8,7 +8,7 @@ public:
     Component() = delete;
     virtual ~Component() = default;
 
-protected:
+public:
     const Entity& GetEntity() { return m_Entity; }
     const Entity& GetEntity() const { return m_Entity; }
 

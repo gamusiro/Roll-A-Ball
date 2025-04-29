@@ -45,6 +45,7 @@ private:
     std::unordered_set<std::pair<Entity*, Entity*>, PairHash> m_CurrentTrigger;
 
 private:
+    friend class Application;
     friend class SceneManager;
     friend class CollisionCallback;
 };
