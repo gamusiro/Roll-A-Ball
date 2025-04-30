@@ -48,5 +48,6 @@ void Collectable::OnTriggerEnter(const Entity* entity)
     {
         std::cout << "Hit Player object!!!" << std::endl;
         RemoveComponent<MeshRenderer>();
+        RemoveComponent<BoxCollider>();
     }
 }

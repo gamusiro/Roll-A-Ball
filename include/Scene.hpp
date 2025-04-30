@@ -6,44 +6,47 @@
 #include "Entity.h"
 
 template<typename T>
-inline T* Scene::Instantiate(const std::string& name)
+inline std::shared_ptr<T> Scene::Instantiate(const std::string& name)
 {
-    std::unique_ptr<Entity> ret = std::make_unique<T>(shared_from_this());
+    std::shared_ptr<T> ret = std::make_shared<T>(shared_from_this());
     ret->AddComponent<Transform>(position, euler, scale);
-    Tag& tag = ret->AddComponent<Tag>();
+    ret->AddComponent<Tag>();
     ret->Awake();
-    m_Entities.insert({ name, std::move(ret) });
-    return reinterpret_cast<T*>(ret.get());
+    ret.get()->m_Name = name;
+    m_Entities.insert({ name, std::static_pointer_cast<Entity>(ret) });
+    return ret;
 }
 
 template<typename T>
-inline T* Scene::Instantiate(
+inline std::shared_ptr<T> Scene::Instantiate(
     const std::string& name,
     const glm::vec3& position,
     const glm::vec3& euler,
     const glm::vec3& scale)
 {
-    std::unique_ptr<Entity> ret = std::make_unique<T>(shared_from_this());
+    std::shared_ptr<T> ret = std::make_shared<T>(shared_from_this());
     ret->AddComponent<Transform>(position, euler, scale);
-    Tag& tag = ret->AddComponent<Tag>();
+    ret->AddComponent<Tag>();
     ret->Awake();
-    m_Entities.insert({ name, std::move(ret) });
-    return reinterpret_cast<T*>(ret.get());
+    ret.get()->m_Name = name;
+    m_Entities.insert({ name, std::static_pointer_cast<Entity>(ret) });
+    return ret;
 }
 
 template<typename T>
-inline T* Scene::Instantiate(
+inline std::shared_ptr<T> Scene::Instantiate(
     const std::string& name,
     const glm::vec3& position,
     const glm::quat& rotation,
     const glm::vec3& scale)
 {
-    std::unique_ptr<Entity> ret = std::make_unique<T>(shared_from_this());
+    std::shared_ptr<T> ret = std::make_shared<T>(shared_from_this());
     ret->AddComponent<Transform>(position, euler, scale);
-    Tag& tag = ret->AddComponent<Tag>();
+    ret->AddComponent<Tag>();
     ret->Awake();
-    m_Entities.insert({ name, std::move(ret) });
-    return reinterpret_cast<T*>(ret.get());
+    ret.get()->m_Name = name;
+    m_Entities.insert({ name, std::static_pointer_cast<Entity>(ret) });
+    return ret;
 }
 
 #endif //!ROLL_A_BALL_INCLUDE_SCENE_HPP_

@@ -14,15 +14,16 @@ bool GameScene::Init()
         glm::vec3 position(0.0f, 0.5f, 0.0f);
         glm::vec3 euler(0.0f);
         glm::vec3 scale(1.0f);
-        Player* player = Instantiate<Player>("Player", position, euler, scale);
+        auto player = Instantiate<Player>("Player", position, euler, scale);
+        AddEventListener<KeyEventPressed, Player, &Player::KeyPressed>(*player);
     }
     
     // Camera
     {
-        //glm::vec3 position(0.0f, 7.0f, 15.0f);
-        //glm::vec3 euler = glm::vec3(glm::radians(-20.0f), 0.0f, 0.0f);
-        glm::vec3 position(0.0f, 25.0f, 0.0f);
-        glm::vec3 euler = glm::vec3(glm::radians(-89.0f), 0.0f, 0.0f);
+        glm::vec3 position(0.0f, 7.0f, 15.0f);
+        glm::vec3 euler = glm::vec3(glm::radians(-20.0f), 0.0f, 0.0f);
+        //glm::vec3 position(0.0f, 25.0f, 0.0f);
+        //glm::vec3 euler = glm::vec3(glm::radians(-89.0f), 0.0f, 0.0f);
         glm::vec3 scale(1.0f);
         Instantiate<MainCamera>("MainCamera", position, euler, scale);
     }
@@ -70,7 +71,7 @@ bool GameScene::Init()
     // Collectables
     const float deg = 360.0f / 12.0f;
     for(int i = 0; i < 12; ++i) {
-        glm::vec3 position(cosf(glm::radians(deg * float(i))) * 5.0f, 0.5f, sinf(glm::radians(deg * float(i))) * 5.0f);
+        glm::vec3 position(cosf(glm::radians(deg * float(i))) * 5.0f, 1.0f, sinf(glm::radians(deg * float(i))) * 5.0f);
         glm::vec3 euler(0.0f);
         glm::vec3 scale(0.5f);
 
@@ -91,7 +92,7 @@ void GameScene::Update()
 void GameScene::Render() const
 {
     // projection matrix
-    MainCamera* camera = FindEntity<MainCamera>("MainCamera");
+    auto camera = FindEntity<MainCamera>("MainCamera");
     glm::mat4 view = camera->GetViewMatrix();
     glm::mat4 projection = camera->GetComponent<PerspectiveCamera>().GetProjectionMatrix();
 

@@ -7,7 +7,7 @@ class Entity
 {
 public:
     Entity(ScenePtr scene);
-    virtual ~Entity(){}
+    virtual ~Entity() { m_Scene->m_Registry.destroy(m_ID); }
 
 public:
     virtual void Awake(){}
@@ -46,8 +46,10 @@ public:
     }
 
 private:
+    std::string m_Name;
     entt::entity m_ID;
     ScenePtr m_Scene;
+    friend class Scene;
 };
 
 #endif
