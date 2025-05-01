@@ -14,7 +14,7 @@ void Transform::SetRotation(const glm::vec3& euler)
 
 void Transform::SetRotation(const glm::quat& quat) 
 {
-    m_Rotation = quat;
+    m_Rotation = glm::normalize(quat);
     calculate();
 }
 
