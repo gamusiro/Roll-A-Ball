@@ -12,9 +12,9 @@ add_subdirectory(vendor/assimp)
 
 # project files
 file(GLOB_RECURSE SOURCES
-    ${CMAKE_SOURCE_DIR}/src/*.cpp
-    ${CMAKE_SOURCE_DIR}/include/*.h
-    ${CMAKE_SOURCE_DIR}/include/*.hpp
+    ${CMAKE_SOURCE_DIR}/roll-a-ball/src/*.cpp
+    ${CMAKE_SOURCE_DIR}/roll-a-ball/include/*.h
+    ${CMAKE_SOURCE_DIR}/roll-a-ball/include/*.hpp
 )
 
 # build project
@@ -28,7 +28,7 @@ target_compile_definitions(${PROJECT_NAME} PUBLIC
 
 # include external
 target_include_directories(${PROJECT_NAME} PUBLIC
-    ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/roll-a-ball/include
     ${CMAKE_SOURCE_DIR}/vendor/bullet/src
     ${CMAKE_SOURCE_DIR}/vendor/entt/src
     ${CMAKE_SOURCE_DIR}/vendor/glm

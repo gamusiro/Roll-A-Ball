@@ -4,6 +4,8 @@
 ## 目的
 Unityの初心者向けプロジェクトをC++で作成すること
 
+![Screen shot](https://github.com/gamusiro/Roll-A-Ball/screenshots/Game.png)
+
 ## 方針
 - enttライブラリを使用したECS設計への意識
 - OpenGLでのレンダリング処理
