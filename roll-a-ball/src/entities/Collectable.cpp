@@ -47,6 +47,11 @@ void Collectable::OnTriggerEnter(const std::shared_ptr<Entity> entity)
     if(tag.GetName() == "Player")
     {
         LOG_CORE_TRACE("Hit Player object!!!");
+
+        auto counterEntt = FindEntity<Entity>("Counter");
+        CollectableCounter& cc = counterEntt->GetComponent<CollectableCounter>();
+        cc.SetValue(cc.GetValue() - 1);
+
         Destroy(shared_from_this());
     }
 }

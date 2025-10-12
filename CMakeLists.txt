@@ -9,6 +9,7 @@ add_subdirectory(vendor/entt)
 add_subdirectory(vendor/glad)
 add_subdirectory(vendor/spdlog)
 add_subdirectory(vendor/assimp)
+add_subdirectory(vendor/freetype)
 
 # project files
 file(GLOB_RECURSE SOURCES
@@ -36,6 +37,8 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/vendor/glad/include
     ${CMAKE_SOURCE_DIR}/vendor/spdlog/include
     ${CMAKE_SOURCE_DIR}/vendor/assimp/include
+    ${CMAKE_SOURCE_DIR}/vendor/freetype/include
+    ${CMAKE_SOURCE_DIR}/vendor/utf/source
     ${CMAKE_SOURCE_DIR}/build/vendor/assimp/include
 )
 
@@ -65,6 +68,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
     glm
     GLAD
     assimp
+    freetype
 )
 
 target_compile_options(${PROJECT_NAME} PUBLIC /FS)

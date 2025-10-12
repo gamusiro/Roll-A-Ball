@@ -9,7 +9,7 @@ template<typename T>
 inline std::shared_ptr<T> Scene::Instantiate(const std::string& name)
 {
     std::shared_ptr<T> ret = std::make_shared<T>(shared_from_this());
-    ret->AddComponent<Transform>(position, euler, scale);
+    ret->AddComponent<Transform>(glm::vec3(), glm::vec3(), glm::vec3());
     ret->AddComponent<Tag>();
     ret->Awake();
     ret.get()->m_Name = name;

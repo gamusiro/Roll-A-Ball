@@ -45,9 +45,21 @@ public:
         return m_Scene->getComponent<Comp>(m_ID);
     }
 
+    template<typename T>
+    inline std::shared_ptr<T> Instantiate(const std::string& name)
+    {
+        return m_Scene->Instantiate<T>(name);
+    }
+
     inline void Destroy(const std::shared_ptr<Entity> entity)
     {
         m_Scene->Destroy(entity);
+    }
+
+    template<typename T>
+    std::shared_ptr<T> FindEntity(const std::string& name) const
+    {
+        return m_Scene->FindEntity<T>(name.c_str());
     }
 
 private:

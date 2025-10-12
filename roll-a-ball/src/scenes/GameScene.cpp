@@ -1,4 +1,6 @@
 #include "scenes/GameScene.h"
+
+#include "FontManager.h"
 #include "ShaderManager.h"
 
 bool GameScene::Init()
@@ -10,7 +12,8 @@ bool GameScene::Init()
 
     // Load shaders
     ShaderManager& sm = ShaderManager::Instance();
-    sm.LoadShader(SHADER_DEFAULT_3D, "default.vert", "default.frag");
+    sm.LoadShader(SHADER_DEFAULT, "default.vert", "default.frag");
+    sm.LoadShader(SHADER_UI, "ui.vert", "ui.frag");
     
     // Player
     {
@@ -76,8 +79,10 @@ bool GameScene::Init()
     }
 
     // Collectables
-    const float deg = 360.0f / 12.0f;
-    for(int i = 0; i < 12; ++i) {
+    const int CollectableNum = 12;
+    const float deg = 360.0f / float(CollectableNum);
+    for(int i = 0; i < CollectableNum; ++i) 
+    {
         glm::vec3 position(cosf(glm::radians(deg * float(i))) * 5.0f, 1.0f, sinf(glm::radians(deg * float(i))) * 5.0f);
         glm::vec3 euler(0.0f);
         glm::vec3 scale(0.5f);
@@ -87,6 +92,33 @@ bool GameScene::Init()
         Instantiate<Collectable>(ss.str(), position, euler, scale);
     }
 
+    // Collectable Counter
+    {
+        auto entity = Instantiate<Entity>("Counter");
+        entity->AddComponent<CollectableCounter>(CollectableNum);
+    }
+
+    // UI
+    {
+        auto entity = Instantiate<Entity>("Counter Text");
+        Material& material = entity->AddComponent<Material>();
+        material.SetAlbedo(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+        material.SetShader(ShaderManager::Instance().GetShader(SHADER_UI));
+
+        auto counterEntt = FindEntity<Entity>("Counter");
+        CollectableCounter& cc = counterEntt->GetComponent<CollectableCounter>();
+        cc.SetValue(CollectableNum);
+
+        std::string text = u8"残り" + std::to_string(cc.GetValue()) + u8"個";
+        std::u32string output;
+
+        utf8::utf8to32(text.begin(), text.end(), std::back_inserter(output));
+        FontPtr font = FontManager::Instance().GetFont(FONT_NOTOSANS_JP);
+        entity->AddComponent<Text>(output, font);
+
+        entity->AddComponent<TextRenderer>();
+    }
+
     return true;
 }
 
@@ -94,30 +126,65 @@ void GameScene::Update()
 {
     for(auto& pair : m_Entities)
         pair.second->Update();
+
+    {// Update text
+        auto counterEntt = FindEntity<Entity>("Counter");
+        CollectableCounter& cc = counterEntt->GetComponent<CollectableCounter>();
+
+        std::string input = u8"残り" + std::to_string(cc.GetValue()) + u8"個";
+        std::u32string output;
+
+        utf8::utf8to32(input.begin(), input.end(), std::back_inserter(output));
+
+        auto textEntt = FindEntity<Entity>("Counter Text");
+        textEntt->GetComponent<Text>().SetText(output);
+    }
+
 }
 
 void GameScene::Render() const
 {
-    // projection matrix
-    auto camera = FindEntity<MainCamera>("MainCamera");
-    glm::mat4 view = camera->GetViewMatrix();
-    glm::mat4 projection = camera->GetComponent<PerspectiveCamera>().GetProjectionMatrix();
-
-    auto v = View<Transform, Material, MeshRenderer>();
-    for(auto entity : v)
     {
-        const Transform& transform = v.get<Transform>(entity);
-        const Material& material = v.get<Material>(entity);
-        const MeshRenderer& renderer = v.get<MeshRenderer>(entity);
+        // projection matrix
+        auto camera = FindEntity<MainCamera>("MainCamera");
+        glm::mat4 view = camera->GetViewMatrix();
+        glm::mat4 projection = camera->GetComponent<PerspectiveCamera>().GetProjectionMatrix();
 
-        ShaderPtr shader = material.GetShader();
-        shader->Bind();
-        shader->Set("u_Albedo", material.GetAlbedo());
-        shader->Set("u_Transform", transform.GetWorldMatrix());
-        shader->Set("u_ViewProjection", projection * view);
+        auto v = View<Transform, Material, MeshRenderer>();
+        for(auto entity : v)
+        {
+            const Transform& transform = v.get<Transform>(entity);
+            const Material& material = v.get<Material>(entity);
+            const MeshRenderer& renderer = v.get<MeshRenderer>(entity);
 
-        renderer.Render();
+            ShaderPtr shader = material.GetShader();
+            shader->Bind();
+            shader->Set("u_Albedo", material.GetAlbedo());
+            shader->Set("u_Transform", transform.GetWorldMatrix());
+            shader->Set("u_ViewProjection", projection * view);
+
+            renderer.Render();
+        }
     }
+
+    {// UI rendering
+        auto v = View<Text, Material, TextRenderer>();
+        glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(DEFAULT_WIDTH), 0.0f, static_cast<float>(DEFAULT_HEIGHT));
+
+        for(auto entity : v)
+        {
+            const Text& text = v.get<Text>(entity);
+            const Material& material = v.get<Material>(entity);
+            const TextRenderer& renderer = v.get<TextRenderer>(entity);
+
+            ShaderPtr shader = material.GetShader();
+            shader->Bind();
+            shader->Set("u_Albedo", material.GetAlbedo());
+            shader->Set("u_Projection", projection);
+
+            renderer.Render(text);
+        }
+    } 
 }
 
 void GameScene::Term()

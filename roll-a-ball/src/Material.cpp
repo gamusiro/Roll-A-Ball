@@ -3,7 +3,7 @@
 Material::Material(const std::shared_ptr<Entity> entity)
     : Component(entity),
     m_Albedo(glm::vec4(1.0f)),
-    m_Shader(ShaderManager::Instance().GetShader(SHADER_DEFAULT_3D))
+    m_Shader(ShaderManager::Instance().GetShader(SHADER_DEFAULT))
 {
 }
 

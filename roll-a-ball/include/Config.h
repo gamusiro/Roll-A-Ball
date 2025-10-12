@@ -44,26 +44,40 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
+// freetype
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
+// utf
+#include "utf8.h"
+
 // Window Settings
-#define DEFAULT_WIDTH  640
-#define DEFAULT_HEIGHT 480
+#define DEFAULT_WIDTH  800
+#define DEFAULT_HEIGHT 600
 #define DEFAULT_CAPTION "Roll-A-Ball"
 
 #define ASSETS_PATH "assets/"
 #define SHADERS_PATH ASSETS_PATH "shaders/"
 #define MODELS_PATH ASSETS_PATH "models/"
+#define FONTS_PATH ASSETS_PATH "fonts/"
 
 // Shaders
-#define SHADER_DEFAULT_3D "default3D"
+#define SHADER_DEFAULT "default"
+#define SHADER_UI "ui"
+
+// Fonts
+#define FONT_NOTOSANS_JP "NotoSansJP-Regular.ttf"
 
 
 class Scene;
 class Entity;
 class Mesh;
+class Font;
 class Shader;
 
 using ScenePtr = std::shared_ptr<Scene>;
 using MeshPtr = std::shared_ptr<Mesh>;
+using FontPtr = std::shared_ptr<Font>;
 using ShaderPtr = std::shared_ptr<Shader>;
 
 

@@ -6,11 +6,16 @@
 #include "Utils.h"
 #include "KeyEvent.h"
 
+// Structures
+
+
 // Components
 #include "Transform.h"
 #include "Mesh.h"
 #include "Shader.h"
 #include "MeshRenderer.h"
+#include "TextRenderer.h"
+#include "Text.h"
 #include "Camera.h"
 #include "BoxCollider.h"
 #include "SphereCollider.h"
@@ -18,6 +23,7 @@
 #include "RigidBody.h"
 #include "Material.h"
 #include "Tag.h"
+#include "CollectableCounter.h"
 
 class Scene : public std::enable_shared_from_this<Scene>
 {

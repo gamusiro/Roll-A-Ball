@@ -5,6 +5,8 @@
 #include "Time.h"
 #include "Scene.h"
 #include "SceneManager.h"
+#include "Font.h"
+#include "FontManager.h"
 #include "KeyEvent.h"
 #include "ApplicationEvent.h"
 
@@ -98,6 +100,23 @@ bool Application::init()
     }
     LOG_CORE_INFO("Loaded glad library");
 
+    // Freetype
+    if(!FontManager::Instance().init())
+    {
+        LOG_CORE_ERROR("Failed to initialize FontManager");
+        return false;
+    }
+
+    // Load fonts
+    std::vector<std::string> list;
+    list.push_back(FONT_NOTOSANS_JP);
+
+    FontManager::Instance().load(list);
+
+    std::u32string jp = U"残り0123456789個";
+    FontPtr font = FontManager::Instance().GetFont(FONT_NOTOSANS_JP);
+    font->MakeGlyphs(jp);
+    
     // Bullet Physics
     Physics::Instance().init();
 
@@ -105,6 +124,8 @@ bool Application::init()
     SceneManager::Instance().LoadScene(std::make_shared<GameScene>());
 
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     return true;
 }
@@ -116,6 +137,9 @@ void Application::term()
 
     // Terminate Physics
     Physics::Instance().term();
+
+    // Terminate Fonts
+    FontManager::Instance().term();
 
     glfwDestroyWindow(m_Window);
     glfwTerminate();
