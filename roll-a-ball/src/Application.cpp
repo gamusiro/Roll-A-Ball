@@ -113,9 +113,8 @@ bool Application::init()
 
     FontManager::Instance().load(list);
 
-    std::u32string jp = U"残り0123456789個";
     FontPtr font = FontManager::Instance().GetFont(FONT_NOTOSANS_JP);
-    font->MakeGlyphs(jp);
+    font->MakeGlyphs();
     
     // Bullet Physics
     Physics::Instance().init();

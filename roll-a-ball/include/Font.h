@@ -15,7 +15,11 @@ class Font
 public:
     ~Font();
     const Glyph& GetGlyph(char32_t c) const;
+    void MakeGlyphs();
     void MakeGlyphs(const std::u32string& str);
+
+private:
+    void makeGlyph(char32_t c);
     
 private:
     FT_Face m_Face;
