@@ -18,6 +18,7 @@ void Scene::Destroy(const std::shared_ptr<Entity> entity)
         return;
     }
 
+    entity->OnDestroy();
     m_Entities.erase(entity->m_Name);
     m_Registry.destroy(entity->m_ID);
 }

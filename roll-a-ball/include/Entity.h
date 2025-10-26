@@ -13,6 +13,7 @@ public:
     virtual void Awake(){}
     virtual void Start(){}
     virtual void Update(){}
+    virtual void OnDestroy() {}
     virtual void OnCollisionEnter(const std::shared_ptr<Entity> entity){}
     virtual void OnCollisionStay(const std::shared_ptr<Entity> entity){}
     virtual void OnCollisionExit(const std::shared_ptr<Entity> entity){}
