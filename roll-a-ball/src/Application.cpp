@@ -7,7 +7,6 @@
 #include "SceneManager.h"
 #include "Font.h"
 #include "FontManager.h"
-#include "KeyEvent.h"
 #include "ApplicationEvent.h"
 
 #include "scenes/GameScene.h"
@@ -61,27 +60,7 @@ bool Application::init()
     // Key call back
     glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
     {
-        switch (action)
-        {
-            case GLFW_PRESS:
-            {
-                KeyEventPressed e(key, 0);
-                SceneManager::Instance().m_CurScene->Dispatch<KeyEventPressed>(std::move(e));
-                break;
-            }
-            case GLFW_REPEAT:
-            {
-                KeyEventPressed e(key, 1);
-                SceneManager::Instance().m_CurScene->Dispatch<KeyEventPressed>(std::move(e));
-                break;
-            }
-            case GLFW_RELEASE:
-            {
-                KeyEventReleased e(key);
-                SceneManager::Instance().m_CurScene->Dispatch<KeyEventReleased>(std::move(e));
-                break;
-            }
-        }
+        
     });
 
     // Frame buffer resize callback

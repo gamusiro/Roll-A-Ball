@@ -4,7 +4,6 @@
 
 #include "Logger.h"
 #include "Utils.h"
-#include "KeyEvent.h"
 
 // Structures
 

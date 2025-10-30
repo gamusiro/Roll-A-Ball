@@ -33,32 +33,27 @@ void Player::Awake()
     AddComponent<RigidBody>(collider);
 }
 
-void Player::KeyPressed(const KeyEventPressed& e)
-{
-    LOG_CORE_INFO("KeyEvent!!!");
+// void Player::KeyPressed(const KeyEventPressed& e)
+// {
+//     LOG_CORE_INFO("KeyEvent!!!");
 
-    RigidBody& rigidBody = GetComponent<RigidBody>();
-    Transform& transform = GetComponent<Transform>();
+//     RigidBody& rigidBody = GetComponent<RigidBody>();
+//     Transform& transform = GetComponent<Transform>();
 
-    std::stringstream ss;
-    ss << "x: " << transform.GetPosition().x << " y: " << transform.GetPosition().y << " z: " << transform.GetPosition().z << std::endl;
-    LOG_CORE_INFO(ss.str());
+//     std::stringstream ss;
+//     ss << "x: " << transform.GetPosition().x << " y: " << transform.GetPosition().y << " z: " << transform.GetPosition().z << std::endl;
+//     LOG_CORE_INFO(ss.str());
 
-    if(e.GetKeyCode() == GLFW_KEY_W){
-        rigidBody.AddImpulse(transform.GetForward());
-    }
-    else if(e.GetKeyCode() == GLFW_KEY_S){
-        rigidBody.AddImpulse(transform.GetForward() * -1.0f);
-    }
-    else if(e.GetKeyCode() == GLFW_KEY_A){
-        rigidBody.AddImpulse(transform.GetRight() * -1.0f);
-    }
-    else if(e.GetKeyCode() == GLFW_KEY_D){
-        rigidBody.AddImpulse(transform.GetRight());
-    }
-}
-
-void Player::KeyReleased(const KeyEventReleased& e)
-{
-
-}
+//     if(e.GetKeyCode() == GLFW_KEY_W){
+//         rigidBody.AddImpulse(transform.GetForward());
+//     }
+//     else if(e.GetKeyCode() == GLFW_KEY_S){
+//         rigidBody.AddImpulse(transform.GetForward() * -1.0f);
+//     }
+//     else if(e.GetKeyCode() == GLFW_KEY_A){
+//         rigidBody.AddImpulse(transform.GetRight() * -1.0f);
+//     }
+//     else if(e.GetKeyCode() == GLFW_KEY_D){
+//         rigidBody.AddImpulse(transform.GetRight());
+//     }
+// }
