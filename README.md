@@ -21,6 +21,8 @@ Unityの初心者向けプロジェクトをC++で作成すること
 - spdlog
 - assimp
 - stb
+- utf
+- freetype
 
 ## 対象
 Windows

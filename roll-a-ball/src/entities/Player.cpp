@@ -31,34 +31,40 @@ void Player::Awake()
     const float radius = 0.5f;
     SphereCollider& collider = AddComponent<SphereCollider>(radius, param);
     AddComponent<RigidBody>(collider);
+
+    InputAction moveAction(
+        "Move",
+        { InputPath::Keyboard::W, InputPath::Keyboard::S, InputPath::Keyboard::A, InputPath::Keyboard::D },
+        std::make_shared<Vector2Composite>(InputPath::Keyboard::W, InputPath::Keyboard::S, InputPath::Keyboard::A, InputPath::Keyboard::D),
+        std::bind(&Player::Move, this, std::placeholders::_1));
+
+    InputAction jumpAction(
+        "Jump", 
+        { InputPath::Keyboard::SPACE }, 
+        std::make_shared<ButtonComposite>(InputPath::Keyboard::SPACE),
+        std::bind(&Player::Jump, this, std::placeholders::_1));
+
+    PlayerInput& playerInput = AddComponent<PlayerInput>();
+    playerInput.AddAction(moveAction);
+    playerInput.AddAction(jumpAction);
 }
 
-void Player::KeyPressed(const KeyEventPressed& e)
+void Player::Move(const InputActionCallbackContext& context)
 {
-    LOG_CORE_INFO("KeyEvent!!!");
+    glm::vec2 inputDir = context.ReadValue<glm::vec2>();
+    std::cout << "X: " << inputDir.x << " Y: " << inputDir.y << std::endl;
 
     RigidBody& rigidBody = GetComponent<RigidBody>();
     Transform& transform = GetComponent<Transform>();
 
-    std::stringstream ss;
-    ss << "x: " << transform.GetPosition().x << " y: " << transform.GetPosition().y << " z: " << transform.GetPosition().z << std::endl;
-    LOG_CORE_INFO(ss.str());
+    glm::vec3 fwd = transform.GetForward() * inputDir.y;
+    glm::vec3 rgt = transform.GetRight() * inputDir.x;
 
-    if(e.GetKeyCode() == GLFW_KEY_W){
-        rigidBody.AddImpulse(transform.GetForward());
-    }
-    else if(e.GetKeyCode() == GLFW_KEY_S){
-        rigidBody.AddImpulse(transform.GetForward() * -1.0f);
-    }
-    else if(e.GetKeyCode() == GLFW_KEY_A){
-        rigidBody.AddImpulse(transform.GetRight() * -1.0f);
-    }
-    else if(e.GetKeyCode() == GLFW_KEY_D){
-        rigidBody.AddImpulse(transform.GetRight());
-    }
+    rigidBody.AddImpulse((fwd + rgt) * k_Speed);
 }
 
-void Player::KeyReleased(const KeyEventReleased& e)
+void Player::Jump(const InputActionCallbackContext& context)
 {
-
+    bool jump = context.ReadValue<bool>();
+    std::cout << "Player::Jump" << std::endl;
 }

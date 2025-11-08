@@ -10,10 +10,11 @@ public:
 
 public:
     void Awake();
+    void Move(const InputActionCallbackContext& context);
+    void Jump(const InputActionCallbackContext& context);
 
-public:
-    void KeyPressed(const KeyEventPressed& e);
-    void KeyReleased(const KeyEventReleased& e);
+private:
+    const float k_Speed = 0.1f;
 };
 
 #endif //!ROLL_A_BALL_INCLUDE_ENTITIES_PLAYER_H_

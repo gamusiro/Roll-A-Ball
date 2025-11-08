@@ -5,9 +5,9 @@
 #include "Time.h"
 #include "Scene.h"
 #include "SceneManager.h"
+#include "InputManager.h"
 #include "Font.h"
 #include "FontManager.h"
-#include "KeyEvent.h"
 #include "ApplicationEvent.h"
 
 #include "scenes/GameScene.h"
@@ -17,14 +17,17 @@ void Application::Run()
     if(init())
     {
         SceneManager& sceneManager = SceneManager::Instance();
+        InputManager& inputManager = InputManager::Instance();
         while (!glfwWindowShouldClose(m_Window) && !sceneManager.Empty())
         {
             // Clear screen
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             // Scene
+            inputManager.update();
             sceneManager.update();
             sceneManager.render();
+            inputManager.reset();
 
             glfwSwapBuffers(m_Window);
             glfwPollEvents();
@@ -61,27 +64,32 @@ bool Application::init()
     // Key call back
     glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
     {
+        InputManager& im = InputManager::Instance();
         switch (action)
         {
-            case GLFW_PRESS:
-            {
-                KeyEventPressed e(key, 0);
-                SceneManager::Instance().m_CurScene->Dispatch<KeyEventPressed>(std::move(e));
-                break;
-            }
-            case GLFW_REPEAT:
-            {
-                KeyEventPressed e(key, 1);
-                SceneManager::Instance().m_CurScene->Dispatch<KeyEventPressed>(std::move(e));
-                break;
-            }
-            case GLFW_RELEASE:
-            {
-                KeyEventReleased e(key);
-                SceneManager::Instance().m_CurScene->Dispatch<KeyEventReleased>(std::move(e));
-                break;
-            }
+        case GLFW_PRESS:    im.setKey(key, true);   break;
+        case GLFW_RELEASE:  im.setKey(key, false);  break;
         }
+    });
+
+    // Mouse button callback
+    glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods)
+    {
+        InputManager& im = InputManager::Instance();
+        switch (action)
+        {
+        case GLFW_PRESS:    im.setMouse(button, true);   break;
+        case GLFW_RELEASE:  im.setMouse(button, false);  break;
+        }
+    });
+
+    // Cursor callback
+    glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double xpos, double ypos)
+    {
+        InputManager& im = InputManager::Instance();
+        float x = static_cast<float>(xpos);
+        float y = static_cast<float>(ypos);
+        im.setMouse(x, y);
     });
 
     // Frame buffer resize callback

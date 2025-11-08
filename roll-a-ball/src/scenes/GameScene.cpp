@@ -21,7 +21,6 @@ bool GameScene::Init()
         glm::vec3 euler(0.0f);
         glm::vec3 scale(1.0f);
         auto player = Instantiate<Player>("Player", position, euler, scale);
-        AddEventListener<KeyEventPressed, Player, &Player::KeyPressed>(*player);
     }
     
     // Camera
@@ -124,6 +123,10 @@ bool GameScene::Init()
 
 void GameScene::Update()
 {
+    auto v = View<PlayerInput>();
+    for (auto entity : v)
+        v.get<PlayerInput>(entity).Update();
+
     for(auto& pair : m_Entities)
         pair.second->Update();
 

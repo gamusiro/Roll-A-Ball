@@ -4,7 +4,6 @@
 
 #include "Logger.h"
 #include "Utils.h"
-#include "KeyEvent.h"
 
 // Structures
 
@@ -23,6 +22,15 @@
 #include "RigidBody.h"
 #include "Material.h"
 #include "Tag.h"
+#include "InputAction.h"
+#include "InputComposite.h"
+#include "InputActionCallbackContext.h"
+#include "PlayerInput.h"
+
+// Composites
+#include "ButtonComposite.h"
+#include "Vector2Composite.h"
+
 #include "CollectableCounter.h"
 
 class Scene : public std::enable_shared_from_this<Scene>
