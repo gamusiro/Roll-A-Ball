@@ -18,12 +18,16 @@ void MainCamera::Awake()
     float farZ = 1000.0f;
     AddComponent<PerspectiveCamera>(fovy, aspect, nearZ, farZ);
 
-    Transform& transform = GetComponent<Transform>();
-    m_ViewMatrix = Camera::CalcViewMatrix(transform);
+    Transform& plyTrans = FindEntity<Entity>("Player")->GetComponent<Transform>();
+    Transform& camTrans = GetComponent<Transform>();
+
+    m_Offset = camTrans.GetPosition() - plyTrans.GetPosition();
 }
 
 void MainCamera::Update()
 {
-    Transform& transform = GetComponent<Transform>();
-    m_ViewMatrix = Camera::CalcViewMatrix(transform);
+    Transform& plyTrans = FindEntity<Entity>("Player")->GetComponent<Transform>();
+    Transform& camTrans = GetComponent<Transform>();
+    camTrans.SetPosition(plyTrans.GetPosition() + m_Offset);
+    m_ViewMatrix = Camera::CalcViewMatrix(camTrans);
 }

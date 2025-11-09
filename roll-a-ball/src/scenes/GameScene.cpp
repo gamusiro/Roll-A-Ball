@@ -2,6 +2,7 @@
 
 #include "FontManager.h"
 #include "ShaderManager.h"
+#include "TextureManager.h"
 
 bool GameScene::Init()
 {
@@ -14,6 +15,15 @@ bool GameScene::Init()
     ShaderManager& sm = ShaderManager::Instance();
     sm.LoadShader(SHADER_DEFAULT, "default.vert", "default.frag");
     sm.LoadShader(SHADER_UI, "ui.vert", "ui.frag");
+
+    // Load textures
+    TextureManager& tm = TextureManager::Instance();
+    tm.LoadTexture(TEXTURE_WHITE);
+    tm.LoadTexture(TEXTURE_PLAYER_ALBEDO);
+    tm.LoadTexture(TEXTURE_PLAYER_NORMAL);
+    tm.LoadTexture(TEXTURE_PLAYER_METALNESS);
+    tm.LoadTexture(TEXTURE_PLAYER_ROUGHNESS);
+    tm.LoadTexture(TEXTURE_PLAYER_DISPLACEMENT);
     
     // Player
     {
@@ -25,16 +35,10 @@ bool GameScene::Init()
     
     // Camera
     {
-        glm::vec3 position(0.0f, 5.0f, 10.0f);
-        glm::vec3 euler = glm::vec3(glm::radians(-20.0f), 0.0f, 0.0f);
+        glm::vec3 position(0.0f, 10.0f, 15.0f);
+        glm::vec3 euler = glm::vec3(glm::radians(-30.0f), 0.0f, 0.0f);
         glm::vec3 scale(1.0f);
         auto camera = Instantiate<MainCamera>("MainCamera", position, euler, scale);
-        auto player = FindEntity<Player>("Player");
-
-        Transform& camTrans = camera->GetComponent<Transform>();
-        Transform& plyTrans = player->GetComponent<Transform>();
-
-        camTrans.SetParent(&plyTrans);
     }
     
     // Ground
@@ -165,6 +169,27 @@ void GameScene::Render() const
             shader->Set("u_Albedo", material.GetAlbedo());
             shader->Set("u_Transform", transform.GetWorldMatrix());
             shader->Set("u_ViewProjection", projection * view);
+            shader->Set("u_CamPos", camera->GetComponent<Transform>().GetPosition());
+            shader->Set("u_AlbedoTexture", 0);
+            shader->Set("u_NormalTexture", 1);
+            shader->Set("u_RoughnessTexture", 2);
+            shader->Set("u_MetalnessTexture", 3);
+            shader->Set("u_DisplacementTexture", 4);
+
+            glActiveTexture(GL_TEXTURE0);
+            material.GetAlbedoTexture()->Bind();
+
+            glActiveTexture(GL_TEXTURE1);
+            material.GetNormalTexture()->Bind();
+
+            glActiveTexture(GL_TEXTURE2);
+            material.GetRoughnessTexture()->Bind();
+
+            glActiveTexture(GL_TEXTURE3);
+            material.GetMetalnessTexture()->Bind();
+
+            glActiveTexture(GL_TEXTURE4);
+            material.GetDisplacementTexture()->Bind();
 
             renderer.Render();
         }
@@ -185,7 +210,7 @@ void GameScene::Render() const
             shader->Set("u_Albedo", material.GetAlbedo());
             shader->Set("u_Projection", projection);
 
-            renderer.Render(text);
+            //renderer.Render(text);
         }
     } 
 }

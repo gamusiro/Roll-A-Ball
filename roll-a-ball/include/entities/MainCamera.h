@@ -16,6 +16,7 @@ public:
 
 private:
     glm::mat4 m_ViewMatrix;
+    glm::vec3 m_Offset;
 };
 
 #endif //!ROLL_A_BALL_INCLUDE_ENTITIES_MAINCAMERA_H_

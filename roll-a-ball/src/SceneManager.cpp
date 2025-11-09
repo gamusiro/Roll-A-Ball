@@ -29,15 +29,6 @@ void SceneManager::update()
 
     // Entity call start
     m_CurScene->Update();
-
-    auto view = registry.view<Transform, RigidBody>();
-    for (auto entity : view)
-    {
-        Transform& transform = view.get<Transform>(entity);
-        RigidBody& rigidBody = view.get<RigidBody>(entity);
-        rigidBody.SetPosition(transform.GetPosition());
-        rigidBody.SetRotation(transform.GetRotationQuat());
-    }
 }
 
 void SceneManager::render()

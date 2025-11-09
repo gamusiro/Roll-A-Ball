@@ -122,7 +122,7 @@ bool Application::init()
     FontManager::Instance().load(list);
 
     FontPtr font = FontManager::Instance().GetFont(FONT_NOTOSANS_JP);
-    font->MakeGlyphs();
+    //font->MakeGlyphs();
     
     // Bullet Physics
     Physics::Instance().init();

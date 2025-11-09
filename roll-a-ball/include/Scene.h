@@ -22,6 +22,7 @@
 #include "RigidBody.h"
 #include "Material.h"
 #include "Tag.h"
+#include "Texture.h"
 #include "InputAction.h"
 #include "InputComposite.h"
 #include "InputActionCallbackContext.h"

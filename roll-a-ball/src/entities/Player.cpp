@@ -3,6 +3,7 @@
 #include "Scene.h"
 #include "Logger.h"
 #include "MeshManager.h"
+#include "TextureManager.h"
 
 Player::Player(ScenePtr scene)
     : Entity(scene)
@@ -14,8 +15,14 @@ void Player::Awake()
     MeshPtr mesh = MeshManager::Instance().Create(MODELS_PATH "Sphere.obj");
     AddComponent<MeshRenderer>(mesh);
     
+    TextureManager& tm = TextureManager::Instance();
     Material& material = AddComponent<Material>();
     material.SetAlbedo(glm::vec4(1.0f));
+    material.SetAlbedoTexture(tm.GetTexture(TEXTURE_PLAYER_ALBEDO));
+    material.SetNormalTexture(tm.GetTexture(TEXTURE_PLAYER_NORMAL));
+    material.SetMetalnessTexture(tm.GetTexture(TEXTURE_PLAYER_METALNESS));
+    material.SetRoughnessTexture(tm.GetTexture(TEXTURE_PLAYER_ROUGHNESS));
+    material.SetDisplacementTexture(tm.GetTexture(TEXTURE_PLAYER_DISPLACEMENT));
 
     Tag& tag = GetComponent<Tag>();
     tag.SetName("Player");
@@ -55,7 +62,7 @@ void Player::Move(const InputActionCallbackContext& context)
     std::cout << "X: " << inputDir.x << " Y: " << inputDir.y << std::endl;
 
     RigidBody& rigidBody = GetComponent<RigidBody>();
-    Transform& transform = GetComponent<Transform>();
+    Transform& transform = FindEntity<Entity>("MainCamera")->GetComponent<Transform>();
 
     glm::vec3 fwd = transform.GetForward() * inputDir.y;
     glm::vec3 rgt = transform.GetRight() * inputDir.x;

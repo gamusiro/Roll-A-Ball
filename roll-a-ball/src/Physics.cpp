@@ -48,6 +48,7 @@ void Physics::update(entt::registry& registry, float timeStep)
         Transform& transform = view.get<Transform>(entity);
         RigidBody& rigidBody = view.get<RigidBody>(entity);
         transform.SetPosition(rigidBody.GetPosition());
+        transform.SetRotation(rigidBody.GetRotation());
     }
     
     {// Box Colliders
