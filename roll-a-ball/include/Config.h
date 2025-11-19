@@ -72,11 +72,22 @@
 
 // Textures
 #define TEXTURE_WHITE TEXTURES_PATH "white.png"
+
 #define TEXTURE_PLAYER_ALBEDO TEXTURES_PATH "player/albedo.jpg"
 #define TEXTURE_PLAYER_NORMAL TEXTURES_PATH "player/normal.jpg"
 #define TEXTURE_PLAYER_METALNESS TEXTURES_PATH "player/metalness.jpg"
 #define TEXTURE_PLAYER_ROUGHNESS TEXTURES_PATH "player/roughness.jpg"
 #define TEXTURE_PLAYER_DISPLACEMENT TEXTURES_PATH "player/displacement.jpg"
+
+#define TEXTURE_GROUND_ALBEDO TEXTURES_PATH "ground/albedo.jpg"
+#define TEXTURE_GROUND_NORMAL TEXTURES_PATH "ground/normal.jpg"
+#define TEXTURE_GROUND_ROUGHNESS TEXTURES_PATH "ground/roughness.jpg"
+#define TEXTURE_GROUND_DISPLACEMENT TEXTURES_PATH "ground/displacement.jpg"
+
+#define TEXTURE_WALL_ALBEDO TEXTURES_PATH "wall/albedo.jpg"
+#define TEXTURE_WALL_NORMAL TEXTURES_PATH "wall/normal.jpg"
+#define TEXTURE_WALL_ROUGHNESS TEXTURES_PATH "wall/roughness.jpg"
+#define TEXTURE_WALL_DISPLACEMENT TEXTURES_PATH "wall/displacement.jpg"
 
 
 class Scene;

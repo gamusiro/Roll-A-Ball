@@ -19,11 +19,22 @@ bool GameScene::Init()
     // Load textures
     TextureManager& tm = TextureManager::Instance();
     tm.LoadTexture(TEXTURE_WHITE);
+
     tm.LoadTexture(TEXTURE_PLAYER_ALBEDO);
     tm.LoadTexture(TEXTURE_PLAYER_NORMAL);
     tm.LoadTexture(TEXTURE_PLAYER_METALNESS);
     tm.LoadTexture(TEXTURE_PLAYER_ROUGHNESS);
     tm.LoadTexture(TEXTURE_PLAYER_DISPLACEMENT);
+
+    tm.LoadTexture(TEXTURE_GROUND_ALBEDO);
+    tm.LoadTexture(TEXTURE_GROUND_NORMAL);
+    tm.LoadTexture(TEXTURE_GROUND_ROUGHNESS);
+    tm.LoadTexture(TEXTURE_GROUND_DISPLACEMENT);
+
+    tm.LoadTexture(TEXTURE_WALL_ALBEDO);
+    tm.LoadTexture(TEXTURE_WALL_NORMAL);
+    tm.LoadTexture(TEXTURE_WALL_ROUGHNESS);
+    tm.LoadTexture(TEXTURE_WALL_DISPLACEMENT);
     
     // Player
     {

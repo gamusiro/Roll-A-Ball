@@ -41,7 +41,7 @@ inline std::shared_ptr<T> Scene::Instantiate(
     const glm::vec3& scale)
 {
     std::shared_ptr<T> ret = std::make_shared<T>(shared_from_this());
-    ret->AddComponent<Transform>(position, euler, scale);
+    ret->AddComponent<Transform>(position, rotation, scale);
     ret->AddComponent<Tag>();
     ret->Awake();
     ret.get()->m_Name = name;

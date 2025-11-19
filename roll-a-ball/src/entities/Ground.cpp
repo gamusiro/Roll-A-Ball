@@ -3,6 +3,7 @@
 #include "Scene.h"
 #include "Logger.h"
 #include "MeshManager.h"
+#include "TextureManager.h"
 
 Ground::Ground(ScenePtr scene)
     :Entity(scene)
@@ -14,8 +15,13 @@ void Ground::Awake()
     MeshPtr mesh = MeshManager::Instance().Create(MODELS_PATH "Plane.obj");
     AddComponent<MeshRenderer>(mesh);
     
+    TextureManager& tm = TextureManager::Instance();
     Material& material = AddComponent<Material>();
-    material.SetAlbedo(glm::vec4(50.0f / 255.0f, 130.0f / 255.0f, 246.0f / 255.0f, 1.0f));
+    material.SetAlbedo(glm::vec4(1.0f));
+    material.SetAlbedoTexture(tm.GetTexture(TEXTURE_GROUND_ALBEDO));
+    material.SetNormalTexture(tm.GetTexture(TEXTURE_GROUND_NORMAL));
+    material.SetRoughnessTexture(tm.GetTexture(TEXTURE_GROUND_ROUGHNESS));
+    material.SetDisplacementTexture(tm.GetTexture(TEXTURE_GROUND_DISPLACEMENT));
 
     Tag& tag = GetComponent<Tag>();
     tag.SetName("Ground");
