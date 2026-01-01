@@ -11,6 +11,7 @@
 #include "entities/Ground.h"
 #include "entities/Wall.h"
 #include "entities/Collectable.h"
+#include "entities/BurstParticle.h"
 
 class GameScene : public Scene
 {

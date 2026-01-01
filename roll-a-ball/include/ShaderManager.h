@@ -7,9 +7,14 @@ class ShaderManager
 {
 public:
     static ShaderManager& Instance();
+    void LoadShader(const std::string& shaderName, const std::string& compName);
     void LoadShader(const std::string& shaderName, const std::string& vertName, const std::string& fragName);
+    void LoadShader(const std::string& shaderName, const std::string& vertName, const std::string& geomName, const std::string& fragName);
     ShaderPtr GetShader(const std::string& shaderName);
     void Clear();
+
+private:
+    bool isShaderLoaded(const std::string& shaderName);
 
 private:
     ShaderManager() = default;

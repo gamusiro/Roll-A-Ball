@@ -27,6 +27,8 @@
 #include "InputComposite.h"
 #include "InputActionCallbackContext.h"
 #include "PlayerInput.h"
+#include "ParticleSystem.h"
+#include "ParticleRenderer.h"
 
 // Composites
 #include "ButtonComposite.h"

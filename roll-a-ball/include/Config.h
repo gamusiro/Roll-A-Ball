@@ -13,6 +13,7 @@
 #include <queue>
 #include <iomanip>
 #include <variant>
+#include <chrono>
 
 // Phyisics
 #include <btBulletDynamicsCommon.h>
@@ -20,6 +21,7 @@
 
 // Mathmatics
 #include <glm/glm.hpp>
+#include <glm/gtc/random.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/quaternion.hpp>
@@ -64,8 +66,10 @@
 #define TEXTURES_PATH ASSETS_PATH "textures/"
 
 // Shaders
-#define SHADER_DEFAULT "default"
-#define SHADER_UI "ui"
+#define RENDERER_SHADER_DEFAULT "render_default"
+#define RENDERER_SHADER_UI "render_ui"
+#define RENDERER_SHADER_PARTRICLE "render_particle"
+#define COMPUTE_SHADER_PARTICLE "compute_particle"
 
 // Fonts
 #define FONT_NOTOSANS_JP "NotoSansJP-Regular.ttf"

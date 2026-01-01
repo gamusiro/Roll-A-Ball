@@ -8,21 +8,18 @@ out vec3 v_Pos;
 out vec3 v_Nor;
 out vec2 v_Tex;
 
-uniform mat4 u_ViewProjection;
-uniform mat4 u_Transform;
+uniform mat4 u_Model;
+uniform mat4 u_View;
+uniform mat4 u_Projection;
 
 void main()
 {
-    // --- 法線をワールド空間へ変換 ---
-    mat3 normalMatrix = transpose(inverse(mat3(u_Transform)));
-    v_Nor = normalize(normalMatrix * a_Nor);
+    mat3 normalMatrix = transpose(inverse(mat3(u_Model)));
+    vec4 worldPos = u_Model * vec4(a_Pos, 1.0);
 
-    // --- 頂点位置をワールド空間へ変換 ---
-    vec4 worldPos = u_Transform * vec4(a_Pos, 1.0);
+    gl_Position = u_Projection * u_View * worldPos;
+
     v_Pos = worldPos.xyz;
-
     v_Tex = a_Tex;
-
-    // --- クリップ空間座標へ ---
-    gl_Position = u_ViewProjection * worldPos;
+    v_Nor = normalize(normalMatrix * a_Nor);
 }

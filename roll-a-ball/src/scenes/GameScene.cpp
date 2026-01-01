@@ -3,6 +3,7 @@
 #include "FontManager.h"
 #include "ShaderManager.h"
 #include "TextureManager.h"
+#include "TimeManager.h"
 
 bool GameScene::Init()
 {
@@ -13,8 +14,10 @@ bool GameScene::Init()
 
     // Load shaders
     ShaderManager& sm = ShaderManager::Instance();
-    sm.LoadShader(SHADER_DEFAULT, "default.vert", "default.frag");
-    sm.LoadShader(SHADER_UI, "ui.vert", "ui.frag");
+    sm.LoadShader(RENDERER_SHADER_DEFAULT, "default.vert", "default.frag");
+    sm.LoadShader(RENDERER_SHADER_UI, "ui.vert", "ui.frag");
+    sm.LoadShader(RENDERER_SHADER_PARTRICLE, "particle.vert", "particle.geom", "particle.frag");
+    sm.LoadShader(COMPUTE_SHADER_PARTICLE, "particle.comp");
 
     // Load textures
     TextureManager& tm = TextureManager::Instance();
@@ -112,12 +115,20 @@ bool GameScene::Init()
         entity->AddComponent<CollectableCounter>(CollectableNum);
     }
 
+    // Particle
+    {
+        glm::vec3 position(0.0f, 5.0f, 0.0f);
+        glm::vec3 euler(0.0f);
+        glm::vec3 scale(1.0f);
+        auto entity = Instantiate<BurstParticle>("Burst", position, euler, scale);
+    }
+
     // UI
     {
         auto entity = Instantiate<Entity>("Counter Text");
         Material& material = entity->AddComponent<Material>();
         material.SetAlbedo(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-        material.SetShader(ShaderManager::Instance().GetShader(SHADER_UI));
+        material.SetShader(ShaderManager::Instance().GetShader(RENDERER_SHADER_UI));
 
         auto counterEntt = FindEntity<Entity>("Counter");
         CollectableCounter& cc = counterEntt->GetComponent<CollectableCounter>();
@@ -138,17 +149,34 @@ bool GameScene::Init()
 
 void GameScene::Update()
 {
-    auto v = View<PlayerInput>();
-    for (auto entity : v)
-        v.get<PlayerInput>(entity).Update();
+    {// Update PlayerInput
+        auto v = View<PlayerInput>();
+        for (auto entity : v)
+            v.get<PlayerInput>(entity).Update();
+    }
 
     for(auto& pair : m_Entities)
         pair.second->Update();
 
-    {// Update text
-        auto counterEntt = FindEntity<Entity>("Counter");
-        CollectableCounter& cc = counterEntt->GetComponent<CollectableCounter>();
+    {// Update Particle
+        auto v = View<ParticleSystem>();
+        for (auto entity : v)
+            v.get<ParticleSystem>(entity).Update();
+    }
 
+    // Get entity that has a CollectableCounter component
+    auto counterEntity = FindEntity<Entity>("Counter");
+    CollectableCounter& cc = counterEntity->GetComponent<CollectableCounter>();
+
+    {// Collect all the collectable objects
+        if (cc.GetValue() <= 0)
+        {
+            auto burstEntity = FindEntity<BurstParticle>("Burst");
+            burstEntity->Burst();
+        }
+    }
+
+    {// Update text
         std::string input = u8"残り" + std::to_string(cc.GetValue()) + u8"個";
         std::u32string output;
 
@@ -162,47 +190,67 @@ void GameScene::Update()
 
 void GameScene::Render() const
 {
-    {
-        // projection matrix
-        auto camera = FindEntity<MainCamera>("MainCamera");
-        glm::mat4 view = camera->GetViewMatrix();
-        glm::mat4 projection = camera->GetComponent<PerspectiveCamera>().GetProjectionMatrix();
+    // projection matrix
+    auto camera = FindEntity<MainCamera>("MainCamera");
+    glm::mat4 view = camera->GetViewMatrix();
+    glm::mat4 projection = camera->GetComponent<PerspectiveCamera>().GetProjectionMatrix();
 
-        auto v = View<Transform, Material, MeshRenderer>();
+    auto v = View<Transform, Material, MeshRenderer>();
+    for(auto entity : v)
+    {
+        const Transform& transform = v.get<Transform>(entity);
+        const Material& material = v.get<Material>(entity);
+        const MeshRenderer& renderer = v.get<MeshRenderer>(entity);
+
+        ShaderPtr shader = material.GetShader();
+        shader->Bind();
+        shader->Set("u_Albedo", material.GetAlbedo());
+        shader->Set("u_Model", transform.GetWorldMatrix());
+        shader->Set("u_View", view);
+        shader->Set("u_Projection", projection);
+        shader->Set("u_CamPos", camera->GetComponent<Transform>().GetPosition());
+        shader->Set("u_AlbedoTexture", 0);
+        shader->Set("u_NormalTexture", 1);
+        shader->Set("u_RoughnessTexture", 2);
+        shader->Set("u_MetalnessTexture", 3);
+        shader->Set("u_DisplacementTexture", 4);
+
+        glActiveTexture(GL_TEXTURE0);
+        material.GetAlbedoTexture()->Bind();
+
+        glActiveTexture(GL_TEXTURE1);
+        material.GetNormalTexture()->Bind();
+
+        glActiveTexture(GL_TEXTURE2);
+        material.GetRoughnessTexture()->Bind();
+
+        glActiveTexture(GL_TEXTURE3);
+        material.GetMetalnessTexture()->Bind();
+
+        glActiveTexture(GL_TEXTURE4);
+        material.GetDisplacementTexture()->Bind();
+
+        renderer.Render();
+        shader->Unbind();
+    }
+
+    {// Particle rendering
+        auto v = View<Transform, Material, ParticleSystem, ParticleRenderer>();
         for(auto entity : v)
         {
             const Transform& transform = v.get<Transform>(entity);
             const Material& material = v.get<Material>(entity);
-            const MeshRenderer& renderer = v.get<MeshRenderer>(entity);
+            const ParticleSystem& particle = v.get<ParticleSystem>(entity);
+            const ParticleRenderer& renderer = v.get<ParticleRenderer>(entity);
 
             ShaderPtr shader = material.GetShader();
             shader->Bind();
-            shader->Set("u_Albedo", material.GetAlbedo());
-            shader->Set("u_Transform", transform.GetWorldMatrix());
-            shader->Set("u_ViewProjection", projection * view);
-            shader->Set("u_CamPos", camera->GetComponent<Transform>().GetPosition());
-            shader->Set("u_AlbedoTexture", 0);
-            shader->Set("u_NormalTexture", 1);
-            shader->Set("u_RoughnessTexture", 2);
-            shader->Set("u_MetalnessTexture", 3);
-            shader->Set("u_DisplacementTexture", 4);
+            shader->Set("u_Model", transform.GetWorldMatrix());
+            shader->Set("u_View", view);
+            shader->Set("u_Projection", projection);
 
-            glActiveTexture(GL_TEXTURE0);
-            material.GetAlbedoTexture()->Bind();
-
-            glActiveTexture(GL_TEXTURE1);
-            material.GetNormalTexture()->Bind();
-
-            glActiveTexture(GL_TEXTURE2);
-            material.GetRoughnessTexture()->Bind();
-
-            glActiveTexture(GL_TEXTURE3);
-            material.GetMetalnessTexture()->Bind();
-
-            glActiveTexture(GL_TEXTURE4);
-            material.GetDisplacementTexture()->Bind();
-
-            renderer.Render();
+            renderer.Render(particle);
+            shader->Unbind();
         }
     }
 

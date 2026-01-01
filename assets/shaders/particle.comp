@@ -1,0 +1,41 @@
+#version 430 core
+
+layout(local_size_x = 256) in;
+
+struct Particle {
+    vec3 position; float life;
+    vec3 velocity; float size;
+    vec4 color;
+    vec3 accel; float drag;
+    vec3 offset; float maxLife;
+};
+
+layout (std430, binding = 0) buffer ParticlesSsbo {
+    Particle particles[];
+} particlesSsboData;
+
+uniform float u_DeltaTime;
+
+void main()
+{
+    uint id = gl_GlobalInvocationID.x;
+    if (id >= particlesSsboData.particles.length())
+        return;
+
+    Particle p = particlesSsboData.particles[id];
+
+    float dt = u_DeltaTime;
+
+    if (p.life <= 0.0)
+    {
+        particlesSsboData.particles[id] = p;
+        return;
+    }
+
+    p.velocity += p.accel * dt;
+    p.velocity *= exp(-p.drag * dt);
+    p.position += p.velocity * dt;
+    p.life -= dt;
+
+    particlesSsboData.particles[id] = p;
+}

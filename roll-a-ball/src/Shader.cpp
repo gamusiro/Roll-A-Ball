@@ -1,29 +1,71 @@
 #include "Shader.h"
 
+Shader::Shader(const char* cName)
+{
+	assert(cName);
+
+	std::string csCode = this->loadFile(cName);
+
+	GLuint compute = this->compileShader(csCode.c_str(), GL_COMPUTE_SHADER);
+	this->checkCompileErrors(compute, "COMPUTE");
+
+	m_programID = glCreateProgram();
+	glAttachShader(m_programID, compute);
+	glLinkProgram(m_programID);
+	this->checkCompileErrors(m_programID, "PROGRAM");
+
+	glDeleteShader(compute);
+}
+
 Shader::Shader(const char* vName, const char* fName)
 {
 	assert(vName || fName);
 
-	// シェーダファイル読み込み
 	std::string vsCode = this->loadFile(vName);
 	std::string fsCode = this->loadFile(fName);
 
-	// シェーダコンパイル
 	GLuint vertex = this->compileShader(vsCode.c_str(), GL_VERTEX_SHADER);
 	this->checkCompileErrors(vertex, "VERTEX");
 
 	GLuint fragment = this->compileShader(fsCode.c_str(), GL_FRAGMENT_SHADER);
 	this->checkCompileErrors(fragment, "FRAGMENT");
 
-	// プログラムの設定
 	m_programID = glCreateProgram();
 	glAttachShader(m_programID, vertex);
 	glAttachShader(m_programID, fragment);
 	glLinkProgram(m_programID);
 	this->checkCompileErrors(m_programID, "PROGRAM");
 
-	// シェーダの破棄
 	glDeleteShader(vertex);
+	glDeleteShader(fragment);
+}
+
+Shader::Shader(const char* vName, const char* gName, const char* fName)
+{
+	assert(vName || gName || fName);
+
+	std::string vsCode = this->loadFile(vName);
+	std::string gsCode = this->loadFile(gName);
+	std::string fsCode = this->loadFile(fName);
+
+	GLuint vertex = this->compileShader(vsCode.c_str(), GL_VERTEX_SHADER);
+	this->checkCompileErrors(vertex, "VERTEX");
+
+	GLuint geometry = this->compileShader(gsCode.c_str(), GL_GEOMETRY_SHADER);
+	this->checkCompileErrors(vertex, "GEOMETRY");
+
+	GLuint fragment = this->compileShader(fsCode.c_str(), GL_FRAGMENT_SHADER);
+	this->checkCompileErrors(fragment, "FRAGMENT");
+
+	m_programID = glCreateProgram();
+	glAttachShader(m_programID, vertex);
+	glAttachShader(m_programID, geometry);
+	glAttachShader(m_programID, fragment);
+	glLinkProgram(m_programID);
+	this->checkCompileErrors(m_programID, "PROGRAM");
+
+	glDeleteShader(vertex);
+	glDeleteShader(geometry);
 	glDeleteShader(fragment);
 }
 
@@ -34,11 +76,9 @@ Shader::~Shader()
 
 std::string Shader::loadFile(const char* fileName)
 {
-	// ファイルを開く
 	std::ifstream ifs(fileName);
 	assert(ifs.is_open());
 
-	// データ読み込み
 	std::stringstream ss;
 	ss << ifs.rdbuf();
 	ifs.close();

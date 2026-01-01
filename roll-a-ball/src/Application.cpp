@@ -6,6 +6,7 @@
 #include "Scene.h"
 #include "SceneManager.h"
 #include "InputManager.h"
+#include "TimeManager.h"
 #include "Font.h"
 #include "FontManager.h"
 #include "ApplicationEvent.h"
@@ -18,8 +19,12 @@ void Application::Run()
     {
         SceneManager& sceneManager = SceneManager::Instance();
         InputManager& inputManager = InputManager::Instance();
+        TimeManager& timeManager = TimeManager::Instance();
         while (!glfwWindowShouldClose(m_Window) && !sceneManager.Empty())
         {
+            // Time update
+            timeManager.update();
+
             // Clear screen
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

@@ -13,7 +13,9 @@
 class Shader
 {
 public:
+	Shader(const char* cName);
 	Shader(const char* vName, const char* fName);
+	Shader(const char* vName, const char* gName, const char* fName);
 	virtual ~Shader();
 	void Bind() const { glUseProgram(m_programID); }
 	void Unbind() const { glUseProgram(0); }

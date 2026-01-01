@@ -5,7 +5,7 @@
 Material::Material(const std::shared_ptr<Entity> entity)
     : Component(entity),
     m_Albedo(glm::vec4(1.0f)),
-    m_Shader(ShaderManager::Instance().GetShader(SHADER_DEFAULT)),
+    m_Shader(ShaderManager::Instance().GetShader(RENDERER_SHADER_DEFAULT)),
     m_AlbedoTexture(TextureManager::Instance().GetTexture(TEXTURE_WHITE)),
     m_NormalTexture(TextureManager::Instance().GetTexture(TEXTURE_WHITE)),
     m_MetalnessTexture(TextureManager::Instance().GetTexture(TEXTURE_WHITE)),
