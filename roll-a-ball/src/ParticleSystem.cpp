@@ -219,6 +219,16 @@ void ParticleSystem::SetShapeBox(const glm::vec3& size)
 	m_shapeModule.boxSize = glm::max(glm::vec3(0.1f), size);
 }
 
+void ParticleSystem::SetColorOverLifetime(const std::string& filename)
+{
+	m_colorOverLifetime.imageName = filename;
+}
+
+const std::string& ParticleSystem::GetColorOverLifetime() const
+{
+	return m_colorOverLifetime.imageName;
+}
+
 void ParticleSystem::generateParticle(uint32_t num)
 {
 	// Over max particles

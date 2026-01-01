@@ -3,6 +3,7 @@
 #include "Scene.h"
 #include "Logger.h"
 #include "MeshManager.h"
+#include "TextureManager.h"
 
 Collectable::Collectable(ScenePtr scene)
     :Entity(scene)
@@ -14,8 +15,13 @@ void Collectable::Awake()
     MeshPtr mesh = MeshManager::Instance().Create(MODELS_PATH "Cube.obj");
     AddComponent<MeshRenderer>(mesh);
 
+    TextureManager& tm = TextureManager::Instance();
     Material& material = AddComponent<Material>();
-    material.SetAlbedo(glm::vec4(255.0f / 255.0f, 242.0f / 255.0f, 0.0f, 1.0f));
+    material.SetAlbedo(glm::vec4(1.0f));
+    material.SetAlbedoTexture(tm.GetTexture(TEXTURE_COLLECTABLE_ALBEDO));
+    material.SetNormalTexture(tm.GetTexture(TEXTURE_COLLECTABLE_NORMAL));
+    material.SetRoughnessTexture(tm.GetTexture(TEXTURE_COLLECTABLE_ROUGHNESS));
+    material.SetDisplacementTexture(tm.GetTexture(TEXTURE_COLLECTABLE_DISPLACEMENT));
 
     Tag& tag = GetComponent<Tag>();
     tag.SetName("Collectable");

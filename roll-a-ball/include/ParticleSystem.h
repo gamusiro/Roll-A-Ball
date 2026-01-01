@@ -56,6 +56,11 @@ class ParticleSystem : public Component
 		float radius = 1.0f;
 	};
 
+	struct ColorOverLifetimeModule
+	{
+		std::string imageName;
+	};
+
 public:
 	ParticleSystem(const std::shared_ptr<Entity> entity);
 	~ParticleSystem();
@@ -92,6 +97,10 @@ public:
 	void SetShapeSphere(float radius);
 	void SetShapeBox(const glm::vec3& size);
 
+public:
+	void SetColorOverLifetime(const std::string& filename);
+	const std::string& GetColorOverLifetime() const;
+
 private:
 	void generateParticle(uint32_t num);
 	void generateParticlePosition(glm::vec3& position);
@@ -108,6 +117,7 @@ private:
 	MainModule m_mainModule;
 	EmissionModule m_emissionModule;
 	ShapeModule m_shapeModule;
+	ColorOverLifetimeModule m_colorOverLifetime;
 
 private:
 	uint32_t m_ssbo;

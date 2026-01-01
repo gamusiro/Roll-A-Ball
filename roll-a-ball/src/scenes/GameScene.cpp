@@ -38,6 +38,13 @@ bool GameScene::Init()
     tm.LoadTexture(TEXTURE_WALL_NORMAL);
     tm.LoadTexture(TEXTURE_WALL_ROUGHNESS);
     tm.LoadTexture(TEXTURE_WALL_DISPLACEMENT);
+
+    tm.LoadTexture(TEXTURE_COLLECTABLE_ALBEDO);
+    tm.LoadTexture(TEXTURE_COLLECTABLE_NORMAL);
+    tm.LoadTexture(TEXTURE_COLLECTABLE_ROUGHNESS);
+    tm.LoadTexture(TEXTURE_COLLECTABLE_DISPLACEMENT);
+
+    tm.LoadTexture(TEXTURE_BURSTPARTICLE_COLOR_OVER_LIFETIME);
     
     // Player
     {
@@ -185,7 +192,6 @@ void GameScene::Update()
         auto textEntt = FindEntity<Entity>("Counter Text");
         textEntt->GetComponent<Text>().SetText(output);
     }
-
 }
 
 void GameScene::Render() const
@@ -194,6 +200,19 @@ void GameScene::Render() const
     auto camera = FindEntity<MainCamera>("MainCamera");
     glm::mat4 view = camera->GetViewMatrix();
     glm::mat4 projection = camera->GetComponent<PerspectiveCamera>().GetProjectionMatrix();
+
+    glm::vec3 lightPositions[] = {
+        glm::vec3( 10.0f, 5.0f,  10.0f),
+        glm::vec3(-10.0f, 5.0f,  10.0f),
+        glm::vec3( 10.0f, 5.0f, -10.0f),
+        glm::vec3(-10.0f, 5.0f, -10.0f),
+    };
+    glm::vec3 lightColors[] = {
+        glm::vec3(350.0f,   0.0f,   0.0f),
+        glm::vec3(  0.0f,   0.0f, 350.0f),
+        glm::vec3(  0.0f, 350.0f,   0.0f),
+        glm::vec3(150.0f, 150.0f, 150.0f),
+    };
 
     auto v = View<Transform, Material, MeshRenderer>();
     for(auto entity : v)
@@ -214,6 +233,14 @@ void GameScene::Render() const
         shader->Set("u_RoughnessTexture", 2);
         shader->Set("u_MetalnessTexture", 3);
         shader->Set("u_DisplacementTexture", 4);
+
+        for (unsigned int i = 0; i < sizeof(lightPositions) / sizeof(lightPositions[0]); ++i)
+        {
+            glm::vec3 dir = glm::normalize(lightPositions[i]);
+            lightPositions[i] += dir * TimeManager::Instance().GetDeltaTime();
+            shader->Set("u_LightPositions[" + std::to_string(i) + "]", lightPositions[i]);
+            shader->Set("u_LightColors[" + std::to_string(i) + "]", lightColors[i]);
+        }
 
         glActiveTexture(GL_TEXTURE0);
         material.GetAlbedoTexture()->Bind();
@@ -248,6 +275,10 @@ void GameScene::Render() const
             shader->Set("u_Model", transform.GetWorldMatrix());
             shader->Set("u_View", view);
             shader->Set("u_Projection", projection);
+            shader->Set("u_ColorOverLifeGradient", 0);
+
+            glActiveTexture(GL_TEXTURE0);
+            TextureManager::Instance().GetTexture(particle.GetColorOverLifetime())->Bind();
 
             renderer.Render(particle);
             shader->Unbind();

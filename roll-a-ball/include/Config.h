@@ -93,6 +93,13 @@
 #define TEXTURE_WALL_ROUGHNESS TEXTURES_PATH "wall/roughness.jpg"
 #define TEXTURE_WALL_DISPLACEMENT TEXTURES_PATH "wall/displacement.jpg"
 
+#define TEXTURE_COLLECTABLE_ALBEDO TEXTURES_PATH "collectable/albedo.jpg"
+#define TEXTURE_COLLECTABLE_NORMAL TEXTURES_PATH "collectable/normal.jpg"
+#define TEXTURE_COLLECTABLE_ROUGHNESS TEXTURES_PATH "collectable/roughness.jpg"
+#define TEXTURE_COLLECTABLE_DISPLACEMENT TEXTURES_PATH "collectable/displacement.jpg"
+
+#define TEXTURE_BURSTPARTICLE_COLOR_OVER_LIFETIME TEXTURES_PATH "particle/colorOverLifetime_01.png"
+
 
 class Scene;
 class Entity;

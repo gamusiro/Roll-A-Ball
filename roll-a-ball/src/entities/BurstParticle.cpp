@@ -29,6 +29,7 @@ void BurstParticle::Awake()
     ps.SetMaxParticles(1000);
     ps.SetRateOverTimeConstant(100);
     ps.SetShapeSphere(5.0f);
+    ps.SetColorOverLifetime(TEXTURE_BURSTPARTICLE_COLOR_OVER_LIFETIME);
 }
 
 void BurstParticle::Burst()
