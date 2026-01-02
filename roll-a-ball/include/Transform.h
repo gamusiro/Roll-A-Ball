@@ -93,7 +93,7 @@ private:
 	void calclateParent(glm::mat4 parent);
 
 private:
-	const Transform* m_Parent;
+	Transform* m_Parent;
 	glm::vec3 m_Position;
 	glm::quat m_Rotation;
 	glm::vec3 m_Scale;

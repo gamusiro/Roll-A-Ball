@@ -20,6 +20,7 @@
 #include "SphereCollider.h"
 #include "MeshCollider.h"
 #include "RigidBody.h"
+#include "RectTransform.h"
 #include "Material.h"
 #include "Tag.h"
 #include "Texture.h"

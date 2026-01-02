@@ -127,6 +127,11 @@ bool Application::init()
     FontManager::Instance().load(list);
 
     FontPtr font = FontManager::Instance().GetFont(FONT_NOTOSANS_JP);
+
+    std::string text = u8"残り個1234567890";
+    std::u32string output;
+    utf8::utf8to32(text.begin(), text.end(), std::back_inserter(output));
+    font->MakeGlyphs(output);
     //font->MakeGlyphs();
     
     // Bullet Physics

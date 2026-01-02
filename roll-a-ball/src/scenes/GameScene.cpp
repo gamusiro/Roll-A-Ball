@@ -130,9 +130,21 @@ bool GameScene::Init()
         auto entity = Instantiate<BurstParticle>("Burst", position, euler, scale);
     }
 
-    // UI
+
+    // Virtual canvas
+    auto canvasEntity = Instantiate<Entity>("Canvas");
+    auto& canvasRectTransform = canvasEntity->AddComponent<RectTransform>();
+    canvasRectTransform.SetPosition(glm::vec2(0.0f));
+    canvasRectTransform.SetSize(glm::vec2(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+
+    // Text
     {
         auto entity = Instantiate<Entity>("Counter Text");
+        auto& rectTransform = entity->AddComponent<RectTransform>();
+        rectTransform.SetParent(&canvasRectTransform);
+        rectTransform.SetPosition(glm::vec2(400.0f));
+        rectTransform.SetSize(glm::vec2(1.0f));
+
         Material& material = entity->AddComponent<Material>();
         material.SetAlbedo(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
         material.SetShader(ShaderManager::Instance().GetShader(RENDERER_SHADER_UI));
@@ -286,11 +298,12 @@ void GameScene::Render() const
     }
 
     {// UI rendering
-        auto v = View<Text, Material, TextRenderer>();
+        auto v = View<RectTransform, Text, Material, TextRenderer>();
         glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(DEFAULT_WIDTH), 0.0f, static_cast<float>(DEFAULT_HEIGHT));
 
         for(auto entity : v)
         {
+            const RectTransform& rectTransform = v.get<RectTransform>(entity);
             const Text& text = v.get<Text>(entity);
             const Material& material = v.get<Material>(entity);
             const TextRenderer& renderer = v.get<TextRenderer>(entity);
@@ -298,9 +311,10 @@ void GameScene::Render() const
             ShaderPtr shader = material.GetShader();
             shader->Bind();
             shader->Set("u_Albedo", material.GetAlbedo());
+            shader->Set("u_Model", rectTransform.GetWorldMatrix());
             shader->Set("u_Projection", projection);
 
-            //renderer.Render(text);
+            renderer.Render(text);
         }
     } 
 }

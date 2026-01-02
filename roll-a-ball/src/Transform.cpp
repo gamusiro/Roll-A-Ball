@@ -26,9 +26,17 @@ void Transform::SetScale(const glm::vec3& scale)
 
 void Transform::SetParent(Transform* parent)
 {
+    if (m_Parent)
+    {
+        auto& parentChildren = m_Parent->m_Children;
+        parentChildren.erase(std::remove(parentChildren.begin(), parentChildren.end(), this), parentChildren.end());
+    }
+
     m_Parent = parent;
-    if (parent)
-        parent->m_Children.push_back(this);
+    if (m_Parent)
+        m_Parent->m_Children.push_back(this);
+
+    calclateParent(m_Parent ? m_Parent->GetWorldMatrix() : glm::mat4(1.0f));
 }
 
 void Transform::calculate()
