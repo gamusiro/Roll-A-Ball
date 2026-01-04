@@ -23,6 +23,7 @@ bool GameScene::Init()
     // Load textures
     TextureManager& tm = TextureManager::Instance();
     tm.LoadTexture(TEXTURE_WHITE);
+    tm.LoadTexture(TEXTURE_PARTICLE);
 
     tm.LoadTexture(TEXTURE_PLAYER_ALBEDO);
     tm.LoadTexture(TEXTURE_PLAYER_NORMAL);
@@ -284,9 +285,13 @@ void GameScene::Render() const
             shader->Set("u_Model", transform.GetWorldMatrix());
             shader->Set("u_View", view);
             shader->Set("u_Projection", projection);
-            shader->Set("u_ColorOverLifeGradient", 0);
+            shader->Set("u_Particle", 0);
+            shader->Set("u_ColorOverLifeGradient", 1);
 
             glActiveTexture(GL_TEXTURE0);
+            TextureManager::Instance().GetTexture(TEXTURE_PARTICLE)->Bind();
+
+            glActiveTexture(GL_TEXTURE1);
             TextureManager::Instance().GetTexture(particle.GetColorOverLifetime())->Bind();
 
             renderer.Render(particle);
@@ -295,9 +300,11 @@ void GameScene::Render() const
     }
 
     {// UI rendering
-        auto v = View<RectTransform, Text, CanvasRenderer>();
-        glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(DEFAULT_WIDTH), 0.0f, static_cast<float>(DEFAULT_HEIGHT));
+        auto canvasEntity = FindEntity<Entity>("Canvas");
+        auto& canvasRectTransform = canvasEntity->GetComponent<RectTransform>();
+        glm::mat4 projection = glm::ortho(0.0f, canvasRectTransform.GetSize().x, 0.0f, canvasRectTransform.GetSize().y);
 
+        auto v = View<RectTransform, Text, CanvasRenderer>();
         for(auto entity : v)
         {
             const RectTransform& rectTransform = v.get<RectTransform>(entity);
@@ -324,4 +331,8 @@ void GameScene::ResizeEvent(const WindowResizeEvent& e)
     float width = static_cast<float>(e.GetWidth());
     float height = static_cast<float>(e.GetHeight());
     pers.SetAspect(width, height);
+
+    auto canvasEntity = FindEntity<Entity>("Canvas");
+    auto& canvasRectTransform = canvasEntity->GetComponent<RectTransform>();
+    canvasRectTransform.SetSize(glm::vec2(width, height));
 }

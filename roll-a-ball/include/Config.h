@@ -77,6 +77,7 @@
 
 // Textures
 #define TEXTURE_WHITE TEXTURES_PATH "white.png"
+#define TEXTURE_PARTICLE TEXTURES_PATH "particle.png"
 
 #define TEXTURE_PLAYER_ALBEDO TEXTURES_PATH "player/albedo.jpg"
 #define TEXTURE_PLAYER_NORMAL TEXTURES_PATH "player/normal.jpg"
