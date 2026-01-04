@@ -17,6 +17,7 @@ public:
 
     inline const glm::mat4 GetLocalMatrix() const { return m_LocalMatrix; }
 	inline const glm::mat4 GetWorldMatrix() const { return m_WorldMatrix; }
+    inline const glm::vec2 GetSize() const { return m_Size; }
 
 private:
 	void calculate();

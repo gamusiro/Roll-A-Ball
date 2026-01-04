@@ -15,8 +15,9 @@ bool GameScene::Init()
     // Load shaders
     ShaderManager& sm = ShaderManager::Instance();
     sm.LoadShader(RENDERER_SHADER_DEFAULT, "default.vert", "default.frag");
-    sm.LoadShader(RENDERER_SHADER_UI, "ui.vert", "ui.frag");
+    sm.LoadShader(RENDERER_SHADER_TEXT, "text.vert", "text.frag");
     sm.LoadShader(RENDERER_SHADER_PARTRICLE, "particle.vert", "particle.geom", "particle.frag");
+    sm.LoadShader(RENDERER_SHADER_CANVAS, "canvas.vert", "canvas.frag");
     sm.LoadShader(COMPUTE_SHADER_PARTICLE, "particle.comp");
 
     // Load textures
@@ -142,12 +143,8 @@ bool GameScene::Init()
         auto entity = Instantiate<Entity>("Counter Text");
         auto& rectTransform = entity->AddComponent<RectTransform>();
         rectTransform.SetParent(&canvasRectTransform);
-        rectTransform.SetPosition(glm::vec2(400.0f));
-        rectTransform.SetSize(glm::vec2(1.0f));
-
-        Material& material = entity->AddComponent<Material>();
-        material.SetAlbedo(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-        material.SetShader(ShaderManager::Instance().GetShader(RENDERER_SHADER_UI));
+        rectTransform.SetPosition(glm::vec2(100.0f, 25.0f));
+        rectTransform.SetSize(glm::vec2(200.0f, 50.0f));
 
         auto counterEntt = FindEntity<Entity>("Counter");
         CollectableCounter& cc = counterEntt->GetComponent<CollectableCounter>();
@@ -160,7 +157,7 @@ bool GameScene::Init()
         FontPtr font = FontManager::Instance().GetFont(FONT_NOTOSANS_JP);
         entity->AddComponent<Text>(output, font);
 
-        entity->AddComponent<TextRenderer>();
+        entity->AddComponent<CanvasRenderer>();
     }
 
     return true;
@@ -298,23 +295,16 @@ void GameScene::Render() const
     }
 
     {// UI rendering
-        auto v = View<RectTransform, Text, Material, TextRenderer>();
+        auto v = View<RectTransform, Text, CanvasRenderer>();
         glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(DEFAULT_WIDTH), 0.0f, static_cast<float>(DEFAULT_HEIGHT));
 
         for(auto entity : v)
         {
             const RectTransform& rectTransform = v.get<RectTransform>(entity);
             const Text& text = v.get<Text>(entity);
-            const Material& material = v.get<Material>(entity);
-            const TextRenderer& renderer = v.get<TextRenderer>(entity);
+            const CanvasRenderer& renderer = v.get<CanvasRenderer>(entity);
 
-            ShaderPtr shader = material.GetShader();
-            shader->Bind();
-            shader->Set("u_Albedo", material.GetAlbedo());
-            shader->Set("u_Model", rectTransform.GetWorldMatrix());
-            shader->Set("u_Projection", projection);
-
-            renderer.Render(text);
+            renderer.Render(projection, rectTransform, text);
         }
     } 
 }

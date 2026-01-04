@@ -25,12 +25,13 @@ void Application::Run()
             // Time update
             timeManager.update();
 
-            // Clear screen
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
             // Scene
             inputManager.update();
             sceneManager.update();
+
+            // Clear screen
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glViewport(0, 0, m_WindowWidth, m_WindowHeight);
             sceneManager.render();
             inputManager.reset();
 
@@ -55,6 +56,8 @@ bool Application::init()
     LOG_CORE_INFO("Initialized glfw");
 
     // create window
+    m_WindowWidth = DEFAULT_WIDTH;
+    m_WindowHeight = DEFAULT_HEIGHT;
     m_Window = glfwCreateWindow(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_CAPTION, nullptr, nullptr);
     if(m_Window == nullptr)
     {
@@ -98,9 +101,12 @@ bool Application::init()
     });
 
     // Frame buffer resize callback
+    glfwSetWindowUserPointer(m_Window, this);
     glfwSetFramebufferSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
     {
-        glViewport(0, 0, width, height);
+        Application* app = (Application*)glfwGetWindowUserPointer(window);
+        app->m_WindowWidth = width;
+        app->m_WindowHeight = height;
         WindowResizeEvent e(width, height);
         SceneManager::Instance().m_CurScene->Dispatch<WindowResizeEvent>(std::move(e));
     });

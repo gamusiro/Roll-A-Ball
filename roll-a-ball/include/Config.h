@@ -67,8 +67,9 @@
 
 // Shaders
 #define RENDERER_SHADER_DEFAULT "render_default"
-#define RENDERER_SHADER_UI "render_ui"
+#define RENDERER_SHADER_TEXT "render_text"
 #define RENDERER_SHADER_PARTRICLE "render_particle"
+#define RENDERER_SHADER_CANVAS "render_canvas"
 #define COMPUTE_SHADER_PARTICLE "compute_particle"
 
 // Fonts

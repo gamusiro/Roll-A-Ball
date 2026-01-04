@@ -1,20 +1,25 @@
-#ifndef ROLL_A_BALL_INCLUDE_TEXTRENDERER_H_
-#define ROLL_A_BALL_INCLUDE_TEXTRENDERER_H_
+#ifndef ROLL_A_BALL_INCLUDE_TEXT_RENDERER_H_
+#define ROLL_A_BALL_INCLUDE_TEXT_RENDERER_H_
 #include "Config.h"
 
-#include "Component.h"
-
-class Text;
-class TextRenderer : public Component
+class TextRenderer
 {
 public:
-    TextRenderer(const std::shared_ptr<Entity> entity)
-        :Component(entity){}
+    TextRenderer();
+    ~TextRenderer();
 
 public:
-    void Render(const Text& text) const;
+    void Render(const std::u32string& text, FontPtr font) const;
+
+public:
+    uint32_t GetTextureID() const { return m_TextureID; }
 
 private:
+    uint32_t m_VAO;
+    uint32_t m_VBO;
+    uint32_t m_FBO;
+    uint32_t m_TextureID;
+    ShaderPtr m_Shader;
 };
 
-#endif //!ROLL_A_BALL_INCLUDE_TEXTRENDERER_H_
+#endif //!ROLL_A_BALL_INCLUDE_TEXT_RENDERER_H_

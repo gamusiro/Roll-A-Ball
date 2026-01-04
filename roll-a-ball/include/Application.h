@@ -13,6 +13,8 @@ private:
 
 private:
     GLFWwindow* m_Window;
+    int m_WindowWidth;
+    int m_WindowHeight;
 };
 
 #endif //!ROLL_A_BALL_INCLUDE_APPLICATION_H_
