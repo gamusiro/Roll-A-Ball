@@ -133,14 +133,28 @@ bool GameScene::Init()
     }
 
 
-    // Virtual canvas
-    auto canvasEntity = Instantiate<Entity>("Canvas");
-    auto& canvasRectTransform = canvasEntity->AddComponent<RectTransform>();
-    canvasRectTransform.SetPosition(glm::vec2(0.0f));
-    canvasRectTransform.SetSize(glm::vec2(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+    // Canvas
+    {
+        auto canvasEntity = Instantiate<Entity>("Canvas");
+        auto& canvasRectTransform = canvasEntity->AddComponent<RectTransform>();
+        canvasRectTransform.SetPosition(glm::vec2(0.0f));
+        canvasRectTransform.SetSize(glm::vec2(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+
+        auto camEntity = FindEntity<MainCamera>("MainCamera");
+        auto& canvas = canvasEntity->AddComponent<Canvas>();
+        canvas.SetScreenSpaceOverlay();
+
+        glm::vec2 resolution(1920.0f, 1080.0f);
+        auto& canvasScaler = canvasEntity->AddComponent<CanvasScaler>();
+        canvasScaler.SetScaleWithScreenSizeMatchWidthOrHeight(resolution, 0.0f, 100.0f);
+        canvasScaler.SetScaleFactor(canvasRectTransform.GetSize());
+    }
 
     // Text
     {
+        auto canvasEntity = FindEntity<Entity>("Canvas");
+        auto& canvasRectTransform = canvasEntity->GetComponent<RectTransform>();
+
         auto entity = Instantiate<Entity>("Counter Text");
         auto& rectTransform = entity->AddComponent<RectTransform>();
         rectTransform.SetParent(&canvasRectTransform);
@@ -301,8 +315,12 @@ void GameScene::Render() const
 
     {// UI rendering
         auto canvasEntity = FindEntity<Entity>("Canvas");
+        auto& canvas = canvasEntity->GetComponent<Canvas>();
+        auto& canvasScaler = canvasEntity->GetComponent<CanvasScaler>();
         auto& canvasRectTransform = canvasEntity->GetComponent<RectTransform>();
-        glm::mat4 projection = glm::ortho(0.0f, canvasRectTransform.GetSize().x, 0.0f, canvasRectTransform.GetSize().y);
+
+        float scaleFactor = canvasScaler.GetScaleFactor();
+        glm::mat4 projection = canvas.GetProjection(canvasRectTransform);
 
         auto v = View<RectTransform, Text, CanvasRenderer>();
         for(auto entity : v)
@@ -333,6 +351,10 @@ void GameScene::ResizeEvent(const WindowResizeEvent& e)
     pers.SetAspect(width, height);
 
     auto canvasEntity = FindEntity<Entity>("Canvas");
+    auto& canvasScaler = canvasEntity->GetComponent<CanvasScaler>();
+    canvasScaler.SetScaleFactor(glm::vec2(width, height));
+    
     auto& canvasRectTransform = canvasEntity->GetComponent<RectTransform>();
     canvasRectTransform.SetSize(glm::vec2(width, height));
+    canvasRectTransform.SetScale(glm::vec3(canvasScaler.GetScaleFactor()));
 }

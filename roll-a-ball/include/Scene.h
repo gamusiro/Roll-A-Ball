@@ -15,6 +15,8 @@
 #include "MeshRenderer.h"
 #include "Text.h"
 #include "Camera.h"
+#include "Canvas.h"
+#include "CanvasScaler.h"
 #include "CanvasRenderer.h"
 #include "BoxCollider.h"
 #include "SphereCollider.h"

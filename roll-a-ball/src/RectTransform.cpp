@@ -3,7 +3,9 @@
 
 RectTransform::RectTransform(const std::shared_ptr<Entity> entity)
     :Component(entity),
-    m_Parent(nullptr)
+    m_Parent(nullptr),
+    m_Rotation(glm::vec3(0.0f, 0.0f, 0.0f)),
+    m_Scale(glm::vec3(1.0f, 1.0f, 1.0f))
 {
 }
 
@@ -38,11 +40,23 @@ void RectTransform::SetParent(RectTransform* parent)
     calclateParent(m_Parent ? m_Parent->GetWorldMatrix() : glm::mat4(1.0f));
 }
 
+void RectTransform::SetRotation(const glm::vec3& euler)
+{
+    m_Rotation = glm::quat(glm::radians(euler));
+    calculate();
+}
+
+void RectTransform::SetScale(const glm::vec3& scale)
+{
+    m_Scale = scale;
+    calculate();
+}
+
 void RectTransform::calculate()
 {
     glm::mat4 Trl = glm::translate(glm::mat4(1.0), glm::vec3(m_Position, 0.0f));
-    glm::mat4 Rot = glm::mat4(1.0f);
-    glm::mat4 Scl = glm::mat4(1.0f);
+    glm::mat4 Rot = glm::mat4_cast(m_Rotation);
+    glm::mat4 Scl = glm::scale(glm::mat4(1.0f), m_Scale);
 
     m_LocalMatrix = Trl * Rot * Scl;
     calclateParent(m_Parent ? m_Parent->GetWorldMatrix() : glm::mat4(1.0f));
