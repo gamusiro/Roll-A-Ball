@@ -10,14 +10,25 @@ SceneManager& SceneManager::Instance()
     return instance;
 }
 
-void SceneManager::LoadScene(std::shared_ptr<Scene> scene)
+void SceneManager::AddScene(const std::string& sceneName, SceneFactory factory)
+{
+    m_SceneNames.push_back(sceneName);
+    m_Scenes[sceneName] = factory;
+}
+
+void SceneManager::LoadScene(size_t index)
+{
+    LoadScene(m_SceneNames[index]);
+}
+
+void SceneManager::LoadScene(const std::string& sceneName)
 {
     if(!Empty())
         m_CurScene->Term();
     
     MeshManager::Instance().Clear();
     
-    m_CurScene = scene;
+    m_CurScene = m_Scenes[sceneName]();
     m_CurScene->Init();
 }
 

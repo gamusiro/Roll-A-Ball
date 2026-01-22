@@ -6,9 +6,13 @@
 class SceneManager
 {
 public:
-    static SceneManager& Instance();
+    using SceneFactory = std::function<ScenePtr()>;
 
-    void LoadScene(ScenePtr scene);
+public:
+    static SceneManager& Instance();
+    void AddScene(const std::string& sceneName, SceneFactory factory);
+    void LoadScene(size_t index);
+    void LoadScene(const std::string& sceneName);
     inline bool Empty() const { return m_CurScene == nullptr; }
 
 private:
@@ -21,6 +25,10 @@ private:
     ~SceneManager() = default;
     SceneManager(const SceneManager&) = delete;
     SceneManager operator= (const SceneManager&) = delete;
+
+private:
+    std::vector<std::string> m_SceneNames;
+    std::unordered_map<std::string, SceneFactory> m_Scenes;
 
 private:
     ScenePtr m_CurScene;

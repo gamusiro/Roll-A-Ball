@@ -14,7 +14,7 @@ public:
 		return context.ReadValue<bool>(m_PathType);
 	}
 
-	const InputActionCallbackContext& Evaluate(InputContext& context)
+	const InputActionCallbackContext Evaluate(InputContext& context)
 	{
 		std::cout << "ButtonComposite::Evaluate!!!" << std::endl;
 		return InputActionCallbackContext(context.ReadValue<bool>(m_PathType));

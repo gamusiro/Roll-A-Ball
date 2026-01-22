@@ -22,6 +22,9 @@ public:
     void Term() override;
 
     void ResizeEvent(const WindowResizeEvent& e);
+
+private:
+    void OnCommitKey(const InputActionCallbackContext& context);
 };
 
 

@@ -15,7 +15,7 @@ public:
 			|| context.ReadValue<bool>(m_Left) || context.ReadValue<bool>(m_Right));
 	}
 
-	const InputActionCallbackContext& Evaluate(InputContext& context)
+	const InputActionCallbackContext Evaluate(InputContext& context)
 	{
 		std::cout << "Vector2Composite::Evaluate!!!" << std::endl;
 

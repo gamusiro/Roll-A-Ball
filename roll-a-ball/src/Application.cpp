@@ -11,8 +11,6 @@
 #include "FontManager.h"
 #include "ApplicationEvent.h"
 
-#include "scenes/GameScene.h"
-
 void Application::Run()
 {
     if(init())
@@ -21,7 +19,7 @@ void Application::Run()
         InputManager& inputManager = InputManager::Instance();
         TimeManager& timeManager = TimeManager::Instance();
         while (!glfwWindowShouldClose(m_Window) && !sceneManager.Empty())
-        {
+        {            
             // Time update
             timeManager.update();
 
@@ -104,6 +102,9 @@ bool Application::init()
     glfwSetWindowUserPointer(m_Window, this);
     glfwSetFramebufferSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
     {
+        if(width <= 0 || height <= 0)
+            return;   // Minimize window size
+
         Application* app = (Application*)glfwGetWindowUserPointer(window);
         app->m_WindowWidth = width;
         app->m_WindowHeight = height;
@@ -144,7 +145,7 @@ bool Application::init()
     Physics::Instance().init();
 
     // Load Scene
-    SceneManager::Instance().LoadScene(std::make_shared<GameScene>());
+    SceneManager::Instance().LoadScene(0);
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);

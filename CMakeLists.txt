@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22.0)
-project(Roll-A-Ball)
+project(Roll-A-Ball-GL)
 
 # subdirectories
 add_subdirectory(vendor/bullet)
@@ -44,25 +44,6 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 )
 
 # link libraries
-if(WIN32)
-    target_link_directories(${PROJECT_NAME} PUBLIC
-        ${CMAKE_SOURCE_DIR}/build/lib/${CONFIG}
-        ${CMAKE_SOURCE_DIR}/build/vendor/assimp/lib/${CONFIG}
-    )
-
-    target_link_libraries(${PROJECT_NAME} PUBLIC
-        BulletDynamics_$<CONFIG>
-        BulletCollision_$<CONFIG>
-        LinearMath_$<CONFIG>
-    )
-else()
-    target_link_libraries(${PROJECT_NAME} PUBLIC
-        BulletDynamics
-        BulletCollision
-        LinearMath
-    )
-endif()
-
 target_link_libraries(${PROJECT_NAME} PUBLIC
     glfw
     EnTT
@@ -70,6 +51,9 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
     GLAD
     assimp
     freetype
+    BulletDynamics
+    BulletCollision
+    LinearMath
 )
 
 target_compile_options(${PROJECT_NAME} PUBLIC /FS)

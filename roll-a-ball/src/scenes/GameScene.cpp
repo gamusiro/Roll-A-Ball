@@ -4,6 +4,7 @@
 #include "ShaderManager.h"
 #include "TextureManager.h"
 #include "TimeManager.h"
+#include "SceneManager.h"
 
 bool GameScene::Init()
 {
@@ -54,6 +55,15 @@ bool GameScene::Init()
         glm::vec3 euler(0.0f);
         glm::vec3 scale(1.0f);
         auto player = Instantiate<Player>("Player", position, euler, scale);
+
+        InputAction commitAction(
+            "Commit",
+            { InputPath::Keyboard::ENTER },
+            std::make_shared<ButtonComposite>(InputPath::Keyboard::ENTER),
+            std::bind(&GameScene::OnCommitKey, this, std::placeholders::_1));
+
+        PlayerInput& playerInput = player->GetComponent<PlayerInput>();
+        playerInput.AddAction(commitAction);
     }
     
     // Camera
@@ -140,7 +150,6 @@ bool GameScene::Init()
         canvasRectTransform.SetPosition(glm::vec2(0.0f));
         canvasRectTransform.SetSize(glm::vec2(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 
-        auto camEntity = FindEntity<MainCamera>("MainCamera");
         auto& canvas = canvasEntity->AddComponent<Canvas>();
         canvas.SetScreenSpaceOverlay();
 
@@ -357,4 +366,13 @@ void GameScene::ResizeEvent(const WindowResizeEvent& e)
     auto& canvasRectTransform = canvasEntity->GetComponent<RectTransform>();
     canvasRectTransform.SetSize(glm::vec2(width, height));
     canvasRectTransform.SetScale(glm::vec3(canvasScaler.GetScaleFactor()));
+}
+
+void GameScene::OnCommitKey(const InputActionCallbackContext& context)
+{
+    auto counterEntt = FindEntity<Entity>("Counter");
+    CollectableCounter& cc = counterEntt->GetComponent<CollectableCounter>();
+    
+    if(cc.GetValue() == 0)
+        SceneManager::Instance().LoadScene("Result");
 }
