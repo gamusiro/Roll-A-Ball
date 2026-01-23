@@ -8,5 +8,5 @@ uniform vec4 u_Albedo;
 void main()
 {
     vec4 color = texture(image, v_Tex);    
-    FragColor = color;
+    FragColor = color * u_Albedo;
 }

@@ -90,16 +90,17 @@ bool Application::init()
     });
 
     // Cursor callback
+    glfwSetWindowUserPointer(m_Window, this);
     glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double xpos, double ypos)
     {
+        Application* app = (Application*)glfwGetWindowUserPointer(window);
         InputManager& im = InputManager::Instance();
         float x = static_cast<float>(xpos);
-        float y = static_cast<float>(ypos);
+        float y = static_cast<float>(app->m_WindowHeight) - static_cast<float>(ypos);
         im.setMouse(x, y);
     });
 
     // Frame buffer resize callback
-    glfwSetWindowUserPointer(m_Window, this);
     glfwSetFramebufferSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
     {
         if(width <= 0 || height <= 0)
@@ -135,7 +136,7 @@ bool Application::init()
 
     FontPtr font = FontManager::Instance().GetFont(FONT_NOTOSANS_JP);
 
-    std::string text = u8"残り個1234567890";
+    std::string text = u8"残り個1234567890StartGameTitle";
     std::u32string output;
     utf8::utf8to32(text.begin(), text.end(), std::back_inserter(output));
     font->MakeGlyphs(output);
@@ -146,10 +147,6 @@ bool Application::init()
 
     // Load Scene
     SceneManager::Instance().LoadScene(0);
-
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     return true;
 }

@@ -1,6 +1,8 @@
 #include "CanvasRenderer.h"
 
 #include "Text.h"
+#include "Image.h"
+#include "Texture.h"
 #include "RectTransform.h"
 #include "ShaderManager.h"
 
@@ -48,6 +50,29 @@ void CanvasRenderer::Render(const glm::mat4& proj, const RectTransform& transfor
 
     glm::mat4 model = transform.GetWorldMatrix();
     model *= glm::scale(glm::mat4(1.0f), glm::vec3(transform.GetSize(), 1.0f));
+    m_Shader->Set("u_Albedo", glm::vec4(1.0f));
+    m_Shader->Set("u_Model", model);
+    m_Shader->Set("u_Projection", proj);
+
+    glBindVertexArray(m_VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+
+    m_Shader->Unbind();
+}
+
+void CanvasRenderer::Render(const glm::mat4& proj, const RectTransform& transform, const Image& image) const
+{
+    m_Shader->Bind();
+
+    glActiveTexture(GL_TEXTURE0);
+    image.m_SourceImage->Bind();
+
+    glm::mat4 model = transform.GetWorldMatrix();
+    model *= glm::scale(glm::mat4(1.0f), glm::vec3(transform.GetSize(), 1.0f));
+    m_Shader->Set("u_Albedo", image.m_Color);
     m_Shader->Set("u_Model", model);
     m_Shader->Set("u_Projection", proj);
 

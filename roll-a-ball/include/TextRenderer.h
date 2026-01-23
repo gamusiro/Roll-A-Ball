@@ -9,7 +9,7 @@ public:
     ~TextRenderer();
 
 public:
-    void Render(const std::u32string& text, FontPtr font) const;
+    void Render(const std::u32string& text, FontPtr font, const glm::vec4& color) const;
 
 public:
     uint32_t GetTextureID() const { return m_TextureID; }

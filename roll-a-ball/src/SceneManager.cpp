@@ -40,6 +40,39 @@ void SceneManager::update()
 
     // Entity call start
     m_CurScene->Update();
+
+    // Input UI
+    glm::vec2 cursorPos = InputManager::Instance().GetMouse();
+    auto v = registry.view<RectTransform, Button, Image>();
+    for (auto& entity : v)
+    {
+        auto& rc = v.get<RectTransform>(entity);
+        auto& btn = v.get<Button>(entity);
+        auto& img = v.get<Image>(entity);
+
+        glm::vec2 pos = rc.GetPosition();
+        glm::vec2 size = rc.GetSize() * 0.5f;
+
+        bool hit =
+            cursorPos.x >= pos.x - size.x &&
+            cursorPos.x <= pos.x + size.x &&
+            cursorPos.y >= pos.y - size.y &&
+            cursorPos.y <= pos.y + size.y;
+
+        if (hit)
+        {
+            if (InputManager::Instance().GetMouseTriggered(GLFW_MOUSE_BUTTON_LEFT))
+                btn.SetStatePressed();
+            else
+                btn.SetStateHover();
+        }
+        else
+        {
+            btn.SetStateNormal();
+        }
+
+        img.SetColor(btn.GetColor());
+    }
 }
 
 void SceneManager::render()

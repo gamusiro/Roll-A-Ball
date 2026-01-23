@@ -11,12 +11,37 @@ bool InputManager::GetKey(int code)
 	return m_Keyboard.pressed[code];
 }
 
+bool InputManager::GetKeyTriggered(int code)
+{
+	return m_Keyboard.trigger[code];
+}
+
+bool InputManager::GetKeyReleased(int code)
+{
+	return m_Keyboard.released[code];
+}
+
 bool InputManager::GetMouse(int code)
 {
 	return m_Mouse.pressed[code];
 }
 
+bool InputManager::GetMouseTriggered(int code)
+{
+	return m_Mouse.trigger[code];
+}
+
+bool InputManager::GetMouseReleased(int code)
+{
+	return m_Mouse.released[code];
+}
+
 glm::vec2 InputManager::GetMouse()
+{
+	return m_Mouse.currPoint;
+}
+
+glm::vec2 InputManager::GetMouseDelta()
 {
 	return m_Mouse.deltaPoint;
 }

@@ -40,8 +40,13 @@ public:
     static InputManager& Instance();
 
     bool GetKey(int code);
+    bool GetKeyTriggered(int code);
+    bool GetKeyReleased(int code);
     bool GetMouse(int code);
+    bool GetMouseTriggered(int code);
+    bool GetMouseReleased (int code);
     glm::vec2 GetMouse();
+    glm::vec2 GetMouseDelta();
 
 private:
     void update();

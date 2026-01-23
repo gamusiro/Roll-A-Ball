@@ -229,6 +229,10 @@ void GameScene::Update()
 
 void GameScene::Render() const
 {
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     // projection matrix
     auto camera = FindEntity<MainCamera>("MainCamera");
     glm::mat4 view = camera->GetViewMatrix();
@@ -321,6 +325,10 @@ void GameScene::Render() const
             shader->Unbind();
         }
     }
+
+    glDisable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     {// UI rendering
         auto canvasEntity = FindEntity<Entity>("Canvas");

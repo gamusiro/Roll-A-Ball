@@ -5,6 +5,7 @@
 #include "Component.h"
 
 class Text;
+class Image;
 class RectTransform;
 class CanvasRenderer : public Component
 {
@@ -14,6 +15,7 @@ public:
 
 public:
     void Render(const glm::mat4& proj, const RectTransform& transform, const Text& text) const;
+    void Render(const glm::mat4& proj, const RectTransform& transform, const Image& image) const;
 
 private:
     GLuint m_VAO;

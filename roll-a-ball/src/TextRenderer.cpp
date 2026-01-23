@@ -39,7 +39,7 @@ TextRenderer::~TextRenderer()
     glDeleteFramebuffers(1, &m_FBO);
 }
 
-void TextRenderer::Render(const std::u32string& text, FontPtr font) const
+void TextRenderer::Render(const std::u32string& text, FontPtr font, const glm::vec4& color) const
 {
     float x = 0.0f;
     float y = 0.0f;
@@ -101,7 +101,7 @@ void TextRenderer::Render(const std::u32string& text, FontPtr font) const
     glClear(GL_COLOR_BUFFER_BIT);
     glActiveTexture(GL_TEXTURE0);
     m_Shader->Bind();
-    m_Shader->Set("u_Albedo", glm::vec4(1.0f));
+    m_Shader->Set("u_Albedo", color);
     m_Shader->Set("u_Projection", projection);
 
     glBindVertexArray(m_VAO);

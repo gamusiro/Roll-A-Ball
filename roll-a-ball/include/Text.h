@@ -13,12 +13,14 @@ public:
 
 public:
     void SetText(const std::u32string& text);
+    void SetColor(const glm::vec4& color);
     const std::u32string& GetText() const { return m_Text; }
 
 private:
     std::u32string m_Text;
     const FontPtr m_Font;
     TextRenderer m_Renderer;
+    glm::vec4 m_Color = glm::vec4(1.0f);
 
 private:
     friend class CanvasRenderer;

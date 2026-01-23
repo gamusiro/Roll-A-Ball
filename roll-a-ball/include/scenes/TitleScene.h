@@ -19,7 +19,7 @@ public:
     void ResizeEvent(const WindowResizeEvent& e);
 
 private:
-    void OnCommitKey(const InputActionCallbackContext& context);
+    void OnClick();
 };
 
 

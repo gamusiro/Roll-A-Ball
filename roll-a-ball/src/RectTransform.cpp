@@ -36,7 +36,7 @@ void RectTransform::SetParent(RectTransform* parent)
     m_Parent = parent;
     if (m_Parent)
         m_Parent->m_Children.push_back(this);
-
+    
     calclateParent(m_Parent ? m_Parent->GetWorldMatrix() : glm::mat4(1.0f));
 }
 
